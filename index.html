@@ -3,350 +3,312 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>家庭理财规划</title>
+<title>家庭三年理财规划</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
   :root {
-    --bg: #f0f2f5;
-    --card: #ffffff;
-    --primary: #4f46e5;
-    --primary-light: #818cf8;
-    --success: #22c55e;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --text: #1e293b;
-    --text-secondary: #64748b;
-    --border: #e2e8f0;
-    --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
-    --shadow-lg: 0 10px 25px rgba(0,0,0,.08);
-    --radius: 12px;
+    --bg:#f0f2f5; --card:#fff; --primary:#4f46e5; --primary-light:#818cf8;
+    --success:#22c55e; --warning:#f59e0b; --danger:#ef4444;
+    --text:#1e293b; --text2:#64748b; --border:#e2e8f0;
+    --shadow:0 1px 3px rgba(0,0,0,.08);
+    --radius:12px;
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
-
-  /* Header */
-  .header {
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
-    color:#fff; padding:32px 0; text-align:center;
-  }
-  .header h1 { font-size:28px; font-weight:700; letter-spacing:1px; }
-  .header p { opacity:.85; margin-top:6px; font-size:15px; }
-
-  /* Layout */
-  .container { max-width:1100px; margin:0 auto; padding:24px 16px 60px; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+  .header{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:28px 0;text-align:center;}
+  .header h1{font-size:26px;font-weight:700;}
+  .header p{opacity:.85;margin-top:4px;font-size:14px;}
+  .container{max-width:1100px;margin:0 auto;padding:24px 16px 60px;}
 
   /* Tabs */
-  .tabs { display:flex; gap:6px; margin-bottom:24px; flex-wrap:wrap; }
-  .tab-btn {
-    padding:10px 20px; border:none; border-radius:8px; cursor:pointer;
-    font-size:14px; font-weight:600; background:var(--card); color:var(--text-secondary);
-    box-shadow:var(--shadow); transition:.2s;
-  }
-  .tab-btn:hover { color:var(--primary); }
-  .tab-btn.active { background:var(--primary); color:#fff; }
-
-  .tab-panel { display:none; }
-  .tab-panel.active { display:block; }
+  .tabs{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap;}
+  .tab-btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;background:var(--card);color:var(--text2);box-shadow:var(--shadow);transition:.2s;}
+  .tab-btn:hover{color:var(--primary);}
+  .tab-btn.active{background:var(--primary);color:#fff;}
+  .tab-panel{display:none;}.tab-panel.active{display:block;}
 
   /* Cards */
-  .card {
-    background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
-    padding:24px; margin-bottom:20px;
-  }
-  .card h2 { font-size:18px; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-  .card h2 .icon { font-size:22px; }
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:20px;}
+  .card h2{font-size:17px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
 
-  /* Summary row */
-  .summary-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-bottom:24px; }
-  .summary-card {
-    border-radius:var(--radius); padding:20px 24px; color:#fff; box-shadow:var(--shadow);
-  }
-  .summary-card.income   { background:linear-gradient(135deg,#22c55e,#16a34a); }
-  .summary-card.expense  { background:linear-gradient(135deg,#ef4444,#dc2626); }
-  .summary-card.balance  { background:linear-gradient(135deg,#4f46e5,#7c3aed); }
-  .summary-card.savings  { background:linear-gradient(135deg,#f59e0b,#d97706); }
-  .summary-card .label { font-size:13px; opacity:.9; }
-  .summary-card .value { font-size:26px; font-weight:700; margin-top:4px; }
+  /* Summary */
+  .summary-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px;}
+  .s-card{border-radius:var(--radius);padding:18px 22px;color:#fff;box-shadow:var(--shadow);}
+  .s-card .label{font-size:12px;opacity:.9;}
+  .s-card .value{font-size:24px;font-weight:700;margin-top:2px;}
+  .s-card .sub{font-size:12px;opacity:.8;margin-top:2px;}
+  .bg-blue{background:linear-gradient(135deg,#4f46e5,#7c3aed);}
+  .bg-green{background:linear-gradient(135deg,#22c55e,#16a34a);}
+  .bg-orange{background:linear-gradient(135deg,#f59e0b,#d97706);}
+  .bg-red{background:linear-gradient(135deg,#ef4444,#dc2626);}
+  .bg-cyan{background:linear-gradient(135deg,#06b6d4,#0891b2);}
+  .bg-purple{background:linear-gradient(135deg,#8b5cf6,#7c3aed);}
 
   /* Form */
-  .form-row { display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; margin-bottom:12px; }
-  .form-group { display:flex; flex-direction:column; flex:1; min-width:140px; }
-  .form-group label { font-size:13px; color:var(--text-secondary); margin-bottom:4px; font-weight:500; }
-  .form-group input, .form-group select {
-    padding:10px 12px; border:1px solid var(--border); border-radius:8px;
-    font-size:14px; outline:none; transition:.2s;
-  }
-  .form-group input:focus, .form-group select:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(79,70,229,.15); }
-  .btn {
-    padding:10px 20px; border:none; border-radius:8px; font-size:14px;
-    font-weight:600; cursor:pointer; transition:.2s; white-space:nowrap;
-  }
-  .btn-primary { background:var(--primary); color:#fff; }
-  .btn-primary:hover { background:#4338ca; }
-  .btn-danger  { background:var(--danger); color:#fff; }
-  .btn-danger:hover { background:#dc2626; }
-  .btn-sm { padding:6px 14px; font-size:13px; }
-  .btn-outline { background:transparent; border:1px solid var(--border); color:var(--text-secondary); }
-  .btn-outline:hover { border-color:var(--primary); color:var(--primary); }
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+  .fg{display:flex;flex-direction:column;}
+  .fg label{font-size:13px;color:var(--text2);margin-bottom:4px;font-weight:500;}
+  .fg input,.fg select{padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none;transition:.2s;}
+  .fg input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,.12);}
+  .btn{padding:10px 20px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap;}
+  .btn-primary{background:var(--primary);color:#fff;}.btn-primary:hover{background:#4338ca;}
+  .btn-danger{background:var(--danger);color:#fff;font-size:13px;padding:6px 14px;}
+  .btn-sm{padding:6px 14px;font-size:13px;}
 
   /* Table */
-  .table-wrap { overflow-x:auto; }
-  table { width:100%; border-collapse:collapse; font-size:14px; }
-  th { text-align:left; padding:10px 12px; border-bottom:2px solid var(--border); color:var(--text-secondary); font-weight:600; font-size:13px; }
-  td { padding:10px 12px; border-bottom:1px solid var(--border); }
-  tr:hover { background:#f8fafc; }
-  .badge {
-    display:inline-block; padding:2px 10px; border-radius:99px; font-size:12px; font-weight:600;
+  .table-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);color:var(--text2);font-weight:600;font-size:13px;}
+  td{padding:10px 12px;border-bottom:1px solid var(--border);}
+  tr:hover{background:#f8fafc;}
+
+  /* Progress */
+  .progress{height:12px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:6px 0;}
+  .progress-fill{height:100%;border-radius:99px;transition:width .4s;}
+  .pf-green{background:linear-gradient(90deg,#22c55e,#16a34a);}
+  .pf-yellow{background:linear-gradient(90deg,#f59e0b,#d97706);}
+  .pf-red{background:linear-gradient(90deg,#ef4444,#dc2626);}
+  .pf-blue{background:linear-gradient(90deg,#4f46e5,#818cf8);}
+
+  /* Year breakdown */
+  .year-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .year-card{border:2px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;transition:.2s;}
+  .year-card:hover{border-color:var(--primary-light);}
+  .year-card h3{font-size:16px;color:var(--primary);margin-bottom:8px;}
+  .year-card .big{font-size:28px;font-weight:700;color:var(--text);}
+  .year-card .desc{font-size:13px;color:var(--text2);margin-top:4px;}
+
+  /* Asset */
+  .asset-bar{display:flex;height:36px;border-radius:8px;overflow:hidden;margin:8px 0;}
+  .asset-bar div{display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;}
+
+  /* Monthly row */
+  .month-row{display:grid;grid-template-columns:60px 1fr 1fr 1fr 1fr 80px;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;}
+  .month-row.header{font-weight:600;color:var(--text2);font-size:13px;border-bottom:2px solid var(--border);}
+  .month-input{width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;text-align:right;outline:none;}
+  .month-input:focus{border-color:var(--primary);}
+  .positive{color:var(--success);font-weight:600;}
+  .negative{color:var(--danger);font-weight:600;}
+
+  .status-tag{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600;}
+  .tag-good{background:#dcfce7;color:#16a34a;}
+  .tag-warn{background:#fef3c7;color:#b45309;}
+  .tag-bad{background:#fee2e2;color:#dc2626;}
+
+  .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+
+  .empty-state{text-align:center;padding:30px;color:var(--text2);}
+  .mt-12{margin-top:12px;} .mt-16{margin-top:16px;} .mb-8{margin-bottom:8px;}
+  .flex-between{display:flex;justify-content:space-between;align-items:center;}
+  .text-sm{font-size:13px;color:var(--text2);}
+  .text-right{text-align:right;}
+
+  @media(max-width:768px){
+    .year-grid{grid-template-columns:1fr;}
+    .chart-row{grid-template-columns:1fr;}
+    .month-row{grid-template-columns:50px repeat(4,1fr) 60px;font-size:12px;gap:4px;}
+    .summary-row{grid-template-columns:1fr 1fr;}
   }
-  .badge-income  { background:#dcfce7; color:#16a34a; }
-  .badge-expense { background:#fee2e2; color:#dc2626; }
-
-  /* Charts */
-  .chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-  .chart-box { position:relative; }
-  canvas { max-width:100%; }
-
-  /* Goals */
-  .goal-item { padding:16px 0; border-bottom:1px solid var(--border); }
-  .goal-item:last-child { border-bottom:none; }
-  .goal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-  .goal-name { font-weight:600; }
-  .goal-amount { font-size:13px; color:var(--text-secondary); }
-  .progress-bar { height:10px; background:#e2e8f0; border-radius:99px; overflow:hidden; }
-  .progress-fill { height:100%; border-radius:99px; transition:width .4s; }
-  .progress-fill.green  { background:linear-gradient(90deg,#22c55e,#16a34a); }
-  .progress-fill.yellow { background:linear-gradient(90deg,#f59e0b,#d97706); }
-  .progress-fill.red    { background:linear-gradient(90deg,#ef4444,#dc2626); }
-  .goal-footer { display:flex; justify-content:space-between; margin-top:6px; font-size:12px; color:var(--text-secondary); }
-
-  /* Budget */
-  .budget-item { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
-  .budget-item:last-child { border-bottom:none; }
-  .budget-cat { width:100px; font-weight:600; font-size:14px; }
-  .budget-bar-wrap { flex:1; }
-  .budget-bar { height:22px; background:#e2e8f0; border-radius:8px; overflow:hidden; position:relative; }
-  .budget-bar-fill { height:100%; border-radius:8px; transition:width .4s; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; font-size:11px; color:#fff; font-weight:600; }
-  .budget-nums { width:160px; text-align:right; font-size:13px; color:var(--text-secondary); }
-
-  /* Responsive */
-  @media(max-width:768px) {
-    .chart-grid { grid-template-columns:1fr; }
-    .form-row { flex-direction:column; }
-    .form-group { min-width:100%; }
-    .summary-row { grid-template-columns:1fr 1fr; }
+  @media(max-width:480px){
+    .summary-row{grid-template-columns:1fr;}
+    .month-row{grid-template-columns:40px repeat(4,1fr) 50px;font-size:11px;}
   }
-  @media(max-width:480px) {
-    .summary-row { grid-template-columns:1fr; }
-    .tabs { gap:4px; }
-    .tab-btn { padding:8px 14px; font-size:13px; }
-  }
-
-  .empty-state { text-align:center; padding:40px 20px; color:var(--text-secondary); }
-  .empty-state .icon { font-size:48px; margin-bottom:12px; }
-
-  .actions { display:flex; gap:8px; margin-top:16px; }
-  .mt-16 { margin-top:16px; }
-  .text-right { text-align:right; }
-  .text-danger { color:var(--danger); }
-  .text-success { color:var(--success); }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>家庭理财规划</h1>
-  <p>轻松管理收支 · 科学制定预算 · 实现储蓄目标</p>
+  <h1>家庭三年理财规划 (2026–2028)</h1>
+  <p>目标导向 · 按月追踪 · 科学规划</p>
 </div>
 
 <div class="container">
-  <!-- Summary -->
-  <div class="summary-row" id="summaryRow">
-    <div class="summary-card income">
-      <div class="label">月总收入</div>
-      <div class="value" id="sumIncome">¥0</div>
-    </div>
-    <div class="summary-card expense">
-      <div class="label">月总支出</div>
-      <div class="value" id="sumExpense">¥0</div>
-    </div>
-    <div class="summary-card balance">
-      <div class="label">月结余</div>
-      <div class="value" id="sumBalance">¥0</div>
-    </div>
-    <div class="summary-card savings">
-      <div class="label">储蓄率</div>
-      <div class="value" id="sumRate">0%</div>
-    </div>
-  </div>
+
+  <!-- Summary Dashboard -->
+  <div class="summary-row" id="dashboard"></div>
 
   <!-- Tabs -->
   <div class="tabs">
-    <button class="tab-btn active" data-tab="income">收入管理</button>
-    <button class="tab-btn" data-tab="expense">支出管理</button>
-    <button class="tab-btn" data-tab="budget">预算分析</button>
-    <button class="tab-btn" data-tab="goals">储蓄目标</button>
-    <button class="tab-btn" data-tab="charts">可视化</button>
+    <button class="tab-btn active" data-tab="overview">目标总览</button>
+    <button class="tab-btn" data-tab="monthly">每月监控</button>
+    <button class="tab-btn" data-tab="charts">可视化分析</button>
+    <button class="tab-btn" data-tab="settings">参数设置</button>
   </div>
 
-  <!-- Income Panel -->
-  <div class="tab-panel active" id="panel-income">
+  <!-- Panel: Overview -->
+  <div class="tab-panel active" id="panel-overview">
     <div class="card">
-      <h2><span class="icon">💰</span> 添加收入</h2>
-      <div class="form-row">
-        <div class="form-group">
-          <label>收入名称</label>
-          <input id="incName" placeholder="如：工资">
-        </div>
-        <div class="form-group">
-          <label>类别</label>
-          <select id="incCat">
-            <option>工资薪金</option><option>奖金补贴</option><option>投资理财</option><option>兼职副业</option><option>其他收入</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>月金额 (¥)</label>
-          <input id="incAmount" type="number" min="0" placeholder="0">
-        </div>
-        <button class="btn btn-primary" onclick="addIncome()">添加</button>
+      <h2>📊 当前资产构成</h2>
+      <div class="flex-between mb-8">
+        <span class="text-sm">总资产</span>
+        <span style="font-size:22px;font-weight:700;" id="totalAssetDisplay">¥3,000,000</span>
       </div>
+      <div class="asset-bar" id="assetBar"></div>
+      <div id="assetLegend" style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;font-size:13px;"></div>
     </div>
+
     <div class="card">
-      <h2><span class="icon">📋</span> 收入明细</h2>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>名称</th><th>类别</th><th>月金额</th><th>占比</th><th>操作</th></tr></thead>
-          <tbody id="incomeBody"></tbody>
-        </table>
-      </div>
-      <div id="incomeEmpty" class="empty-state"><div class="icon">📭</div><p>暂无收入记录，点击上方添加</p></div>
+      <h2>🎯 三年目标分解</h2>
+      <p class="text-sm mb-8">3 年净储蓄目标区间，按年均分解（可在"参数设置"中调整）</p>
+      <div class="year-grid" id="yearGrid"></div>
+    </div>
+
+    <div class="card">
+      <h2>📈 达标路径预估</h2>
+      <p class="text-sm mb-8">基于当前参数，预估 3 年后资产情况</p>
+      <div id="projectionSummary"></div>
     </div>
   </div>
 
-  <!-- Expense Panel -->
-  <div class="tab-panel" id="panel-expense">
+  <!-- Panel: Monthly -->
+  <div class="tab-panel" id="panel-monthly">
     <div class="card">
-      <h2><span class="icon">💸</span> 添加支出</h2>
-      <div class="form-row">
-        <div class="form-group">
-          <label>支出名称</label>
-          <input id="expName" placeholder="如：房贷">
+      <div class="flex-between mb-8">
+        <h2 style="margin:0;">📋 每月收支记录</h2>
+        <div>
+          <select id="yearSelect" style="padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;"></select>
         </div>
-        <div class="form-group">
-          <label>类别</label>
-          <select id="expCat">
-            <option>住房</option><option>餐饮</option><option>交通</option><option>教育</option>
-            <option>医疗</option><option>购物</option><option>娱乐</option><option>保险</option>
-            <option>通讯</option><option>人情往来</option><option>其他</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>月金额 (¥)</label>
-          <input id="expAmount" type="number" min="0" placeholder="0">
-        </div>
-        <button class="btn btn-primary" onclick="addExpense()">添加</button>
+      </div>
+      <p class="text-sm mb-8">填写每月实际收入和支出，自动计算净储蓄和累计进度</p>
+      <div class="month-row header">
+        <div>月份</div>
+        <div class="text-right">工资收入</div>
+        <div class="text-right">投资收益</div>
+        <div class="text-right">总支出</div>
+        <div class="text-right">净储蓄</div>
+        <div>状态</div>
+      </div>
+      <div id="monthlyRows"></div>
+      <div class="flex-between mt-16" style="padding:12px 0;border-top:2px solid var(--border);font-weight:600;">
+        <span>年度合计</span>
+        <div id="yearlyTotal" style="display:flex;gap:24px;font-size:14px;"></div>
       </div>
     </div>
+
     <div class="card">
-      <h2><span class="icon">📋</span> 支出明细</h2>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>名称</th><th>类别</th><th>月金额</th><th>占比</th><th>操作</th></tr></thead>
-          <tbody id="expenseBody"></tbody>
-        </table>
-      </div>
-      <div id="expenseEmpty" class="empty-state"><div class="icon">📭</div><p>暂无支出记录，点击上方添加</p></div>
+      <h2>🏁 累计储蓄进度</h2>
+      <div id="cumulativeProgress"></div>
     </div>
   </div>
 
-  <!-- Budget Panel -->
-  <div class="tab-panel" id="panel-budget">
-    <div class="card">
-      <h2><span class="icon">📊</span> 预算建议（50/30/20 法则）</h2>
-      <p style="color:var(--text-secondary);font-size:14px;margin-bottom:16px;">
-        建议将收入的 <b>50%</b> 用于必要开支，<b>30%</b> 用于生活改善，<b>20%</b> 用于储蓄投资。
-      </p>
-      <div id="budgetAdvice"></div>
-    </div>
-    <div class="card">
-      <h2><span class="icon">📈</span> 各类支出预算对比</h2>
-      <div id="budgetBars"></div>
-      <div id="budgetEmpty" class="empty-state"><div class="icon">📭</div><p>请先添加收入和支出数据</p></div>
-    </div>
-  </div>
-
-  <!-- Goals Panel -->
-  <div class="tab-panel" id="panel-goals">
-    <div class="card">
-      <h2><span class="icon">🎯</span> 添加储蓄目标</h2>
-      <div class="form-row">
-        <div class="form-group">
-          <label>目标名称</label>
-          <input id="goalName" placeholder="如：旅行基金">
-        </div>
-        <div class="form-group">
-          <label>目标金额 (¥)</label>
-          <input id="goalTarget" type="number" min="0" placeholder="0">
-        </div>
-        <div class="form-group">
-          <label>已存金额 (¥)</label>
-          <input id="goalSaved" type="number" min="0" placeholder="0">
-        </div>
-        <div class="form-group">
-          <label>目标日期</label>
-          <input id="goalDate" type="date">
-        </div>
-        <button class="btn btn-primary" onclick="addGoal()">添加</button>
-      </div>
-    </div>
-    <div class="card">
-      <h2><span class="icon">🏆</span> 储蓄目标进度</h2>
-      <div id="goalsList"></div>
-      <div id="goalsEmpty" class="empty-state"><div class="icon">🎯</div><p>暂无储蓄目标，开始规划你的未来吧</p></div>
-    </div>
-  </div>
-
-  <!-- Charts Panel -->
+  <!-- Panel: Charts -->
   <div class="tab-panel" id="panel-charts">
-    <div class="chart-grid">
+    <div class="chart-row">
       <div class="card">
-        <h2><span class="icon">🍩</span> 收入构成</h2>
-        <div class="chart-box"><canvas id="chartIncome"></canvas></div>
+        <h2>📈 每月净储蓄趋势</h2>
+        <canvas id="chartMonthly"></canvas>
       </div>
       <div class="card">
-        <h2><span class="icon">🍩</span> 支出构成</h2>
-        <div class="chart-box"><canvas id="chartExpense"></canvas></div>
+        <h2>🍩 支出构成</h2>
+        <canvas id="chartExpense"></canvas>
       </div>
     </div>
     <div class="card mt-16">
-      <h2><span class="icon">📊</span> 收入 vs 支出对比</h2>
-      <div class="chart-box"><canvas id="chartCompare"></canvas></div>
+      <h2>📊 累计储蓄 vs 目标轨迹</h2>
+      <canvas id="chartCumulative"></canvas>
     </div>
   </div>
 
-  <!-- Footer actions -->
-  <div class="actions">
-    <button class="btn btn-outline" onclick="exportData()">导出数据 (JSON)</button>
-    <button class="btn btn-outline" onclick="document.getElementById('importFile').click()">导入数据</button>
-    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
-    <button class="btn btn-danger btn-sm" onclick="clearAll()">清空全部</button>
+  <!-- Panel: Settings -->
+  <div class="tab-panel" id="panel-settings">
+    <div class="card">
+      <h2>⚙️ 基础参数</h2>
+      <div class="form-grid">
+        <div class="fg">
+          <label>3 年储蓄目标（低）</label>
+          <input id="setGoalMin" type="number" value="5000000">
+        </div>
+        <div class="fg">
+          <label>3 年储蓄目标（高）</label>
+          <input id="setGoalMax" type="number" value="8000000">
+        </div>
+        <div class="fg">
+          <label>起始年份</label>
+          <input id="setStartYear" type="number" value="2026">
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>💰 当前资产</h2>
+      <div class="form-grid">
+        <div class="fg">
+          <label>股票资产 (元)</label>
+          <input id="setStocks" type="number" value="1500000">
+        </div>
+        <div class="fg">
+          <label>理财资产 (元)</label>
+          <input id="setFinance" type="number" value="1500000">
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>📥 收入假设（月）</h2>
+      <div class="form-grid">
+        <div class="fg">
+          <label>每月固定工资 (元)</label>
+          <input id="setSalary" type="number" value="0" placeholder="请填写">
+        </div>
+        <div class="fg">
+          <label>股票预期年化收益率 (%)</label>
+          <input id="setStockReturn" type="number" value="8" step="0.1">
+        </div>
+        <div class="fg">
+          <label>理财预期年化收益率 (%)</label>
+          <input id="setFinanceReturn" type="number" value="3.5" step="0.1">
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>📤 支出假设（月）</h2>
+      <div class="form-grid">
+        <div class="fg">
+          <label>每月固定贷款 (元)</label>
+          <input id="setLoan" type="number" value="2650">
+        </div>
+        <div class="fg">
+          <label>每月生活支出 (元)</label>
+          <input id="setLiving" type="number" value="0" placeholder="请填写">
+        </div>
+        <div class="fg">
+          <label>每月其他支出 (元)</label>
+          <input id="setOther" type="number" value="0">
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:12px;">
+      <button class="btn btn-primary" onclick="applySettings()">保存并更新</button>
+      <button class="btn btn-danger" onclick="if(confirm('确定清空所有数据？'))resetAll()">重置全部</button>
+    </div>
   </div>
 </div>
 
 <script>
-const LS_KEY = 'family_finance_v1';
+const LS = 'family_finance_v2';
 
-let state = loadState();
-
-function defaultState() {
-  return { incomes: [], expenses: [], goals: [] };
+function defaults() {
+  return {
+    goalMin: 5000000, goalMax: 8000000, startYear: 2026,
+    stocks: 1500000, finance: 1500000,
+    salary: 0, stockReturn: 8, financeReturn: 3.5,
+    loan: 2650, living: 0, other: 0,
+    monthly: {}
+  };
 }
-function loadState() {
-  try { return JSON.parse(localStorage.getItem(LS_KEY)) || defaultState(); }
-  catch { return defaultState(); }
-}
-function saveState() { localStorage.setItem(LS_KEY, JSON.stringify(state)); }
 
-/* ---------- Tabs ---------- */
+let S = load();
+function load() { try { return JSON.parse(localStorage.getItem(LS)) || defaults(); } catch { return defaults(); } }
+function save() { localStorage.setItem(LS, JSON.stringify(S)); }
+
+/* Helpers */
+function fmt(n) {
+  const abs = Math.abs(n);
+  if (abs >= 10000) return (n < 0 ? '-' : '') + '¥' + (abs / 10000).toFixed(abs >= 100000000 ? 0 : abs >= 1000000 ? 1 : 2) + '万';
+  return '¥' + Number(n).toLocaleString('zh-CN', { maximumFractionDigits: 0 });
+}
+function fmtFull(n) { return '¥' + Number(n).toLocaleString('zh-CN', { maximumFractionDigits: 0 }); }
+function pct(v, t) { return t ? (v / t * 100).toFixed(1) : '0'; }
+
+/* Tabs */
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -354,286 +316,323 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.classList.add('active');
     document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
     if (btn.dataset.tab === 'charts') renderCharts();
-    if (btn.dataset.tab === 'budget') renderBudget();
   });
 });
 
-/* ---------- Helpers ---------- */
-function fmt(n) { return '¥' + Number(n).toLocaleString('zh-CN', { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
-function pct(part, total) { return total ? ((part / total) * 100).toFixed(1) + '%' : '0%'; }
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+/* Dashboard */
+function renderDashboard() {
+  const totalAsset = S.stocks + S.finance;
+  const goalMid = (S.goalMin + S.goalMax) / 2;
+  const monthlyInvReturn = S.stocks * S.stockReturn / 100 / 12 + S.finance * S.financeReturn / 100 / 12;
+  const monthlyExpense = S.loan + S.living + S.other;
+  const monthlyNet = S.salary + monthlyInvReturn - monthlyExpense;
+  const totalSaved = getTotalSaved();
 
-const COLORS = ['#4f46e5','#22c55e','#f59e0b','#ef4444','#06b6d4','#ec4899','#8b5cf6','#14b8a6','#f97316','#6366f1','#a855f7'];
-
-/* ---------- Summary ---------- */
-function updateSummary() {
-  const totalInc = state.incomes.reduce((s, i) => s + i.amount, 0);
-  const totalExp = state.expenses.reduce((s, i) => s + i.amount, 0);
-  const balance = totalInc - totalExp;
-  const rate = totalInc ? ((balance / totalInc) * 100).toFixed(1) : 0;
-  document.getElementById('sumIncome').textContent = fmt(totalInc);
-  document.getElementById('sumExpense').textContent = fmt(totalExp);
-  document.getElementById('sumBalance').textContent = fmt(balance);
-  document.getElementById('sumRate').textContent = rate + '%';
+  document.getElementById('dashboard').innerHTML = `
+    <div class="s-card bg-blue"><div class="label">当前总资产</div><div class="value">${fmt(totalAsset)}</div><div class="sub">股票 ${fmt(S.stocks)} + 理财 ${fmt(S.finance)}</div></div>
+    <div class="s-card bg-green"><div class="label">3年目标区间</div><div class="value">${fmt(S.goalMin)}–${fmt(S.goalMax)}</div><div class="sub">年均 ${fmt(S.goalMin/3)}–${fmt(S.goalMax/3)}</div></div>
+    <div class="s-card bg-cyan"><div class="label">预估月净储蓄</div><div class="value">${fmt(monthlyNet)}</div><div class="sub">工资 + 投资收益 - 支出</div></div>
+    <div class="s-card bg-orange"><div class="label">已累计净储蓄</div><div class="value">${fmt(totalSaved)}</div><div class="sub">完成 ${pct(totalSaved, goalMid)}%（对中位目标）</div></div>
+    <div class="s-card ${totalSaved >= S.goalMin ? 'bg-green' : monthlyNet > 0 ? 'bg-purple' : 'bg-red'}"><div class="label">达标预估</div><div class="value">${monthlyNet > 0 ? Math.ceil((goalMid - totalSaved) / monthlyNet) + ' 个月' : '需调整'}</div><div class="sub">${monthlyNet > 0 ? '预计3年可存 ' + fmt(monthlyNet * 36) : '当前参数下月净储蓄为负'}</div></div>
+  `;
 }
 
-/* ---------- Income ---------- */
-function addIncome() {
-  const name = document.getElementById('incName').value.trim();
-  const cat = document.getElementById('incCat').value;
-  const amount = parseFloat(document.getElementById('incAmount').value) || 0;
-  if (!name || amount <= 0) return alert('请填写名称和有效金额');
-  state.incomes.push({ id: uid(), name, cat, amount });
-  saveState(); renderIncomes(); updateSummary();
-  document.getElementById('incName').value = '';
-  document.getElementById('incAmount').value = '';
-}
-function removeIncome(id) {
-  state.incomes = state.incomes.filter(i => i.id !== id);
-  saveState(); renderIncomes(); updateSummary();
-}
-function renderIncomes() {
-  const total = state.incomes.reduce((s, i) => s + i.amount, 0);
-  const tbody = document.getElementById('incomeBody');
-  const empty = document.getElementById('incomeEmpty');
-  if (!state.incomes.length) { tbody.innerHTML = ''; empty.style.display = ''; return; }
-  empty.style.display = 'none';
-  tbody.innerHTML = state.incomes.map(i => `
-    <tr>
-      <td>${esc(i.name)}</td>
-      <td><span class="badge badge-income">${esc(i.cat)}</span></td>
-      <td>${fmt(i.amount)}</td>
-      <td>${pct(i.amount, total)}</td>
-      <td><button class="btn btn-danger btn-sm" onclick="removeIncome('${i.id}')">删除</button></td>
-    </tr>`).join('');
-}
-
-/* ---------- Expense ---------- */
-function addExpense() {
-  const name = document.getElementById('expName').value.trim();
-  const cat = document.getElementById('expCat').value;
-  const amount = parseFloat(document.getElementById('expAmount').value) || 0;
-  if (!name || amount <= 0) return alert('请填写名称和有效金额');
-  state.expenses.push({ id: uid(), name, cat, amount });
-  saveState(); renderExpenses(); updateSummary();
-  document.getElementById('expName').value = '';
-  document.getElementById('expAmount').value = '';
-}
-function removeExpense(id) {
-  state.expenses = state.expenses.filter(i => i.id !== id);
-  saveState(); renderExpenses(); updateSummary();
-}
-function renderExpenses() {
-  const total = state.expenses.reduce((s, i) => s + i.amount, 0);
-  const tbody = document.getElementById('expenseBody');
-  const empty = document.getElementById('expenseEmpty');
-  if (!state.expenses.length) { tbody.innerHTML = ''; empty.style.display = ''; return; }
-  empty.style.display = 'none';
-  tbody.innerHTML = state.expenses.map(i => `
-    <tr>
-      <td>${esc(i.name)}</td>
-      <td><span class="badge badge-expense">${esc(i.cat)}</span></td>
-      <td>${fmt(i.amount)}</td>
-      <td>${pct(i.amount, total)}</td>
-      <td><button class="btn btn-danger btn-sm" onclick="removeExpense('${i.id}')">删除</button></td>
-    </tr>`).join('');
-}
-
-/* ---------- Budget ---------- */
-const NECESSARY = ['住房','餐饮','交通','医疗','保险','通讯'];
-function renderBudget() {
-  const totalInc = state.incomes.reduce((s, i) => s + i.amount, 0);
-  const adviceDiv = document.getElementById('budgetAdvice');
-  const barsDiv = document.getElementById('budgetBars');
-  const emptyDiv = document.getElementById('budgetEmpty');
-
-  if (!totalInc || !state.expenses.length) {
-    adviceDiv.innerHTML = '';
-    barsDiv.innerHTML = '';
-    emptyDiv.style.display = '';
-    return;
-  }
-  emptyDiv.style.display = 'none';
-
-  const need = totalInc * 0.5, want = totalInc * 0.3, save = totalInc * 0.2;
-  let actualNeed = 0, actualWant = 0;
-  state.expenses.forEach(e => {
-    if (NECESSARY.includes(e.cat)) actualNeed += e.amount;
-    else actualWant += e.amount;
-  });
-  const actualSave = totalInc - actualNeed - actualWant;
-
-  function row(label, suggest, actual) {
-    const over = actual > suggest;
-    return `<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;">
-      <span style="font-weight:600">${label}</span>
-      <span>建议: ${fmt(suggest)}</span>
-      <span class="${over ? 'text-danger' : 'text-success'}">${over ? '超支' : '良好'}: ${fmt(actual)}</span>
-    </div>`;
-  }
-  adviceDiv.innerHTML = row('必要开支 (50%)', need, actualNeed) + row('生活改善 (30%)', want, actualWant) + row('储蓄投资 (20%)', save, actualSave);
-
-  const catMap = {};
-  state.expenses.forEach(e => { catMap[e.cat] = (catMap[e.cat] || 0) + e.amount; });
-  const cats = Object.entries(catMap).sort((a, b) => b[1] - a[1]);
-  const maxVal = Math.max(...cats.map(c => c[1]), 1);
-
-  barsDiv.innerHTML = cats.map(([cat, val], idx) => {
-    const w = (val / totalInc * 100).toFixed(1);
-    const color = COLORS[idx % COLORS.length];
-    return `<div class="budget-item">
-      <div class="budget-cat">${esc(cat)}</div>
-      <div class="budget-bar-wrap"><div class="budget-bar"><div class="budget-bar-fill" style="width:${Math.min(parseFloat(w)*2, 100)}%;background:${color}">${w}%</div></div></div>
-      <div class="budget-nums">${fmt(val)} / ${fmt(totalInc)}</div>
-    </div>`;
-  }).join('');
-}
-
-/* ---------- Goals ---------- */
-function addGoal() {
-  const name = document.getElementById('goalName').value.trim();
-  const target = parseFloat(document.getElementById('goalTarget').value) || 0;
-  const saved = parseFloat(document.getElementById('goalSaved').value) || 0;
-  const date = document.getElementById('goalDate').value;
-  if (!name || target <= 0) return alert('请填写目标名称和有效金额');
-  state.goals.push({ id: uid(), name, target, saved, date });
-  saveState(); renderGoals();
-  document.getElementById('goalName').value = '';
-  document.getElementById('goalTarget').value = '';
-  document.getElementById('goalSaved').value = '';
-  document.getElementById('goalDate').value = '';
-}
-function removeGoal(id) {
-  state.goals = state.goals.filter(g => g.id !== id);
-  saveState(); renderGoals();
-}
-function renderGoals() {
-  const list = document.getElementById('goalsList');
-  const empty = document.getElementById('goalsEmpty');
-  if (!state.goals.length) { list.innerHTML = ''; empty.style.display = ''; return; }
-  empty.style.display = 'none';
-
-  const monthlyBalance = state.incomes.reduce((s, i) => s + i.amount, 0) - state.expenses.reduce((s, i) => s + i.amount, 0);
-
-  list.innerHTML = state.goals.map(g => {
-    const p = Math.min((g.saved / g.target) * 100, 100).toFixed(1);
-    const remaining = g.target - g.saved;
-    let eta = '';
-    if (monthlyBalance > 0 && remaining > 0) {
-      const months = Math.ceil(remaining / monthlyBalance);
-      eta = `按当前结余约需 ${months} 个月`;
+function getTotalSaved() {
+  let total = 0;
+  for (let y = S.startYear; y < S.startYear + 3; y++) {
+    for (let m = 1; m <= 12; m++) {
+      const k = y + '-' + String(m).padStart(2, '0');
+      const d = S.monthly[k];
+      if (d && d.filled) total += (d.salary + d.invest - d.expense);
     }
-    const cls = p >= 80 ? 'green' : p >= 40 ? 'yellow' : 'red';
-    return `<div class="goal-item">
-      <div class="goal-header">
-        <span class="goal-name">${esc(g.name)}</span>
-        <span>
-          <span class="goal-amount">${g.date ? '截止 ' + g.date : ''}</span>
-          <button class="btn btn-danger btn-sm" style="margin-left:8px" onclick="removeGoal('${g.id}')">删除</button>
-        </span>
-      </div>
-      <div class="progress-bar"><div class="progress-fill ${cls}" style="width:${p}%"></div></div>
-      <div class="goal-footer">
-        <span>${fmt(g.saved)} / ${fmt(g.target)} (${p}%)</span>
-        <span>还差 ${fmt(remaining)}${eta ? ' · ' + eta : ''}</span>
-      </div>
-    </div>`;
-  }).join('');
+  }
+  return total;
 }
 
-/* ---------- Charts ---------- */
-let chartInc, chartExp, chartCmp;
+/* Overview */
+function renderOverview() {
+  const totalAsset = S.stocks + S.finance;
+  const stockPct = (S.stocks / totalAsset * 100).toFixed(1);
+  const finPct = (S.finance / totalAsset * 100).toFixed(1);
+
+  document.getElementById('totalAssetDisplay').textContent = fmtFull(totalAsset);
+  document.getElementById('assetBar').innerHTML = `
+    <div style="width:${stockPct}%;background:#ef4444;">股票 ${stockPct}%</div>
+    <div style="width:${finPct}%;background:#4f46e5;">理财 ${finPct}%</div>`;
+  document.getElementById('assetLegend').innerHTML = `
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#ef4444;margin-right:4px;"></span>股票 ${fmt(S.stocks)}</span>
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#4f46e5;margin-right:4px;"></span>理财 ${fmt(S.finance)}</span>`;
+
+  const yearGrid = document.getElementById('yearGrid');
+  const years = [S.startYear, S.startYear + 1, S.startYear + 2];
+  yearGrid.innerHTML = years.map((y, i) => {
+    const minY = Math.round(S.goalMin / 3);
+    const maxY = Math.round(S.goalMax / 3);
+    const minM = Math.round(minY / 12);
+    const maxM = Math.round(maxY / 12);
+    const saved = getYearSaved(y);
+    return `<div class="year-card">
+      <h3>第 ${i + 1} 年（${y}）</h3>
+      <div class="big">${fmt(minY)}–${fmt(maxY)}</div>
+      <div class="desc">每月 ${fmt(minM)}–${fmt(maxM)}</div>
+      <div class="progress"><div class="progress-fill pf-blue" style="width:${Math.min(pct(saved, minY), 100)}%"></div></div>
+      <div class="text-sm">已完成 ${fmt(saved)}（${pct(saved, minY)}%）</div>
+    </div>`;
+  }).join('');
+
+  renderProjection();
+}
+
+function getYearSaved(year) {
+  let total = 0;
+  for (let m = 1; m <= 12; m++) {
+    const k = year + '-' + String(m).padStart(2, '0');
+    const d = S.monthly[k];
+    if (d && d.filled) total += (d.salary + d.invest - d.expense);
+  }
+  return total;
+}
+
+function renderProjection() {
+  const monthlyInv = S.stocks * S.stockReturn / 100 / 12 + S.finance * S.financeReturn / 100 / 12;
+  const monthlyExp = S.loan + S.living + S.other;
+  const monthlyNet = S.salary + monthlyInv - monthlyExp;
+  const proj3y = monthlyNet * 36;
+
+  const hitMin = proj3y >= S.goalMin;
+  const hitMax = proj3y >= S.goalMax;
+
+  let html = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div><span class="text-sm">月工资收入</span><div style="font-size:18px;font-weight:600;">${fmtFull(S.salary)}</div></div>
+    <div><span class="text-sm">月投资收益（预估）</span><div style="font-size:18px;font-weight:600;">${fmtFull(Math.round(monthlyInv))}</div></div>
+    <div><span class="text-sm">月总支出</span><div style="font-size:18px;font-weight:600;">${fmtFull(monthlyExp)}</div></div>
+    <div><span class="text-sm">月净储蓄</span><div style="font-size:18px;font-weight:600;color:${monthlyNet >= 0 ? 'var(--success)' : 'var(--danger)'};">${fmtFull(Math.round(monthlyNet))}</div></div>
+  </div>
+  <div style="margin-top:16px;padding:16px;border-radius:8px;background:${hitMin ? '#f0fdf4' : '#fef2f2'};">
+    <div style="font-weight:600;font-size:16px;color:${hitMin ? 'var(--success)' : 'var(--danger)'};">
+      ${hitMax ? '✅ 预计可达到目标上限' : hitMin ? '✅ 预计可达到目标下限' : '⚠️ 按当前参数无法达到目标下限'}
+    </div>
+    <div class="text-sm mt-12">3 年预估总储蓄：<b>${fmt(proj3y)}</b>（目标 ${fmt(S.goalMin)}–${fmt(S.goalMax)}）</div>
+    ${!hitMin ? '<div class="text-sm mt-12">缺口：<b>' + fmt(S.goalMin - proj3y) + '</b>，需提高月净储蓄至 <b>' + fmt(Math.ceil(S.goalMin / 36)) + '/月</b></div>' : ''}
+    ${S.salary === 0 ? '<div class="text-sm mt-12" style="color:var(--warning);">⚠️ 尚未填写月工资，请到"参数设置"中补充</div>' : ''}
+  </div>`;
+
+  document.getElementById('projectionSummary').innerHTML = html;
+}
+
+/* Monthly */
+let currentYear;
+function initMonthly() {
+  const sel = document.getElementById('yearSelect');
+  sel.innerHTML = '';
+  for (let y = S.startYear; y < S.startYear + 3; y++) {
+    const opt = document.createElement('option');
+    opt.value = y; opt.textContent = y + '年';
+    sel.appendChild(opt);
+  }
+  currentYear = S.startYear;
+  sel.value = currentYear;
+  sel.onchange = () => { currentYear = parseInt(sel.value); renderMonthly(); };
+  renderMonthly();
+}
+
+function renderMonthly() {
+  const wrap = document.getElementById('monthlyRows');
+  const monthlyInv = S.stocks * S.stockReturn / 100 / 12 + S.finance * S.financeReturn / 100 / 12;
+  const monthlyExp = S.loan + S.living + S.other;
+
+  let html = '';
+  let ySalary = 0, yInvest = 0, yExpense = 0, yNet = 0;
+
+  for (let m = 1; m <= 12; m++) {
+    const k = currentYear + '-' + String(m).padStart(2, '0');
+    const d = S.monthly[k] || { salary: S.salary, invest: Math.round(monthlyInv), expense: monthlyExp, filled: false };
+
+    const net = d.salary + d.invest - d.expense;
+    ySalary += d.salary; yInvest += d.invest; yExpense += d.expense; yNet += net;
+
+    const targetMonthly = S.goalMin / 36;
+    const cls = net >= targetMonthly ? 'tag-good' : net >= targetMonthly * 0.7 ? 'tag-warn' : 'tag-bad';
+    const statusText = net >= targetMonthly ? '达标' : net >= targetMonthly * 0.7 ? '接近' : '落后';
+
+    html += `<div class="month-row">
+      <div style="font-weight:600;">${m}月</div>
+      <div><input class="month-input" type="number" value="${d.salary}" data-key="${k}" data-field="salary" onchange="updateMonth(this)"></div>
+      <div><input class="month-input" type="number" value="${d.invest}" data-key="${k}" data-field="invest" onchange="updateMonth(this)"></div>
+      <div><input class="month-input" type="number" value="${d.expense}" data-key="${k}" data-field="expense" onchange="updateMonth(this)"></div>
+      <div class="text-right ${net >= 0 ? 'positive' : 'negative'}">${fmtFull(net)}</div>
+      <div><span class="status-tag ${cls}">${statusText}</span></div>
+    </div>`;
+  }
+  wrap.innerHTML = html;
+
+  document.getElementById('yearlyTotal').innerHTML = `
+    <span>工资 ${fmtFull(ySalary)}</span>
+    <span>投资 ${fmtFull(yInvest)}</span>
+    <span>支出 ${fmtFull(yExpense)}</span>
+    <span class="${yNet >= 0 ? 'positive' : 'negative'}">净存 ${fmtFull(yNet)}</span>`;
+
+  renderCumulative();
+}
+
+function updateMonth(el) {
+  const k = el.dataset.key;
+  const field = el.dataset.field;
+  if (!S.monthly[k]) {
+    const monthlyInv = S.stocks * S.stockReturn / 100 / 12 + S.finance * S.financeReturn / 100 / 12;
+    const monthlyExp = S.loan + S.living + S.other;
+    S.monthly[k] = { salary: S.salary, invest: Math.round(monthlyInv), expense: monthlyExp, filled: true };
+  }
+  S.monthly[k][field] = parseFloat(el.value) || 0;
+  S.monthly[k].filled = true;
+  save();
+  renderMonthly();
+  renderDashboard();
+  renderOverview();
+}
+
+function renderCumulative() {
+  let cum = 0;
+  const targetMin = S.goalMin;
+  const goalMid = (S.goalMin + S.goalMax) / 2;
+
+  let rows = '';
+  for (let y = S.startYear; y < S.startYear + 3; y++) {
+    let yearNet = 0;
+    for (let m = 1; m <= 12; m++) {
+      const k = y + '-' + String(m).padStart(2, '0');
+      const d = S.monthly[k];
+      if (d && d.filled) {
+        const net = d.salary + d.invest - d.expense;
+        yearNet += net;
+      }
+    }
+    cum += yearNet;
+    const p = Math.min(cum / targetMin * 100, 100).toFixed(1);
+    const cls = p >= 90 ? 'pf-green' : p >= 50 ? 'pf-yellow' : 'pf-red';
+    rows += `<div style="padding:12px 0;border-bottom:1px solid var(--border);">
+      <div class="flex-between mb-8"><span style="font-weight:600;">${y} 年</span><span class="text-sm">${fmt(cum)} / ${fmt(targetMin)}（下限）</span></div>
+      <div class="progress"><div class="progress-fill ${cls}" style="width:${p}%"></div></div>
+    </div>`;
+  }
+
+  const totalPct = (cum / targetMin * 100).toFixed(1);
+  document.getElementById('cumulativeProgress').innerHTML = rows +
+    `<div class="mt-12 text-sm">3年累计净储蓄：<b>${fmt(cum)}</b>，完成下限目标的 <b>${totalPct}%</b></div>`;
+}
+
+/* Charts */
+let c1, c2, c3;
 function renderCharts() {
-  if (chartInc) chartInc.destroy();
-  if (chartExp) chartExp.destroy();
-  if (chartCmp) chartCmp.destroy();
+  if (c1) c1.destroy();
+  if (c2) c2.destroy();
+  if (c3) c3.destroy();
 
-  const incCatMap = {};
-  state.incomes.forEach(i => { incCatMap[i.cat] = (incCatMap[i.cat] || 0) + i.amount; });
-  const expCatMap = {};
-  state.expenses.forEach(e => { expCatMap[e.cat] = (expCatMap[e.cat] || 0) + e.amount; });
+  const labels = [], netData = [], cumData = [], targetMinData = [], targetMaxData = [];
+  let cum = 0;
+  const monthlyInv = S.stocks * S.stockReturn / 100 / 12 + S.finance * S.financeReturn / 100 / 12;
+  const monthlyExp = S.loan + S.living + S.other;
 
-  chartInc = new Chart(document.getElementById('chartIncome'), {
-    type: 'doughnut',
-    data: {
-      labels: Object.keys(incCatMap),
-      datasets: [{ data: Object.values(incCatMap), backgroundColor: COLORS }]
-    },
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-  });
+  for (let y = S.startYear; y < S.startYear + 3; y++) {
+    for (let m = 1; m <= 12; m++) {
+      const k = y + '-' + String(m).padStart(2, '0');
+      labels.push(y + '/' + m);
+      const d = S.monthly[k] || { salary: S.salary, invest: Math.round(monthlyInv), expense: monthlyExp };
+      const net = d.salary + d.invest - d.expense;
+      netData.push(net);
+      cum += net;
+      cumData.push(cum);
+      const idx = (y - S.startYear) * 12 + m;
+      targetMinData.push(S.goalMin / 36 * idx);
+      targetMaxData.push(S.goalMax / 36 * idx);
+    }
+  }
 
-  chartExp = new Chart(document.getElementById('chartExpense'), {
-    type: 'doughnut',
-    data: {
-      labels: Object.keys(expCatMap),
-      datasets: [{ data: Object.values(expCatMap), backgroundColor: COLORS }]
-    },
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-  });
-
-  const totalInc = state.incomes.reduce((s, i) => s + i.amount, 0);
-  const totalExp = state.expenses.reduce((s, i) => s + i.amount, 0);
-  chartCmp = new Chart(document.getElementById('chartCompare'), {
+  c1 = new Chart(document.getElementById('chartMonthly'), {
     type: 'bar',
     data: {
-      labels: ['月收入', '月支出', '月结余'],
+      labels,
       datasets: [{
-        data: [totalInc, totalExp, totalInc - totalExp],
-        backgroundColor: ['#22c55e', '#ef4444', '#4f46e5'],
-        borderRadius: 8,
-        maxBarThickness: 80
+        label: '月净储蓄',
+        data: netData,
+        backgroundColor: netData.map(v => v >= 0 ? '#22c55e' : '#ef4444'),
+        borderRadius: 4, maxBarThickness: 24
       }]
     },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true, ticks: { callback: v => '¥' + v.toLocaleString() } } }
-    }
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => fmt(v) } } } }
+  });
+
+  const loanTotal = S.loan * 36, livingTotal = S.living * 36, otherTotal = S.other * 36;
+  c2 = new Chart(document.getElementById('chartExpense'), {
+    type: 'doughnut',
+    data: {
+      labels: ['贷款', '生活支出', '其他'],
+      datasets: [{ data: [loanTotal, livingTotal, otherTotal], backgroundColor: ['#ef4444', '#f59e0b', '#64748b'] }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+
+  c3 = new Chart(document.getElementById('chartCumulative'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: '累计储蓄', data: cumData, borderColor: '#4f46e5', backgroundColor: 'rgba(79,70,229,.1)', fill: true, tension: .3, pointRadius: 1 },
+        { label: '目标下限', data: targetMinData, borderColor: '#22c55e', borderDash: [6, 3], pointRadius: 0, fill: false },
+        { label: '目标上限', data: targetMaxData, borderColor: '#f59e0b', borderDash: [6, 3], pointRadius: 0, fill: false }
+      ]
+    },
+    options: { responsive: true, scales: { y: { ticks: { callback: v => fmt(v) } } }, plugins: { legend: { position: 'bottom' } } }
   });
 }
 
-/* ---------- Import / Export ---------- */
-function exportData() {
-  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = '家庭理财数据_' + new Date().toISOString().slice(0, 10) + '.json';
-  a.click();
-}
-function importData(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    try {
-      const data = JSON.parse(reader.result);
-      if (data.incomes && data.expenses && data.goals) {
-        state = data; saveState(); renderAll();
-        alert('导入成功！');
-      } else { alert('文件格式不正确'); }
-    } catch { alert('解析失败，请检查文件'); }
-  };
-  reader.readAsText(file);
-  e.target.value = '';
-}
-function clearAll() {
-  if (!confirm('确定要清空所有数据吗？此操作不可撤销。')) return;
-  state = defaultState(); saveState(); renderAll();
+/* Settings */
+function applySettings() {
+  S.goalMin = parseFloat(document.getElementById('setGoalMin').value) || 5000000;
+  S.goalMax = parseFloat(document.getElementById('setGoalMax').value) || 8000000;
+  S.startYear = parseInt(document.getElementById('setStartYear').value) || 2026;
+  S.stocks = parseFloat(document.getElementById('setStocks').value) || 0;
+  S.finance = parseFloat(document.getElementById('setFinance').value) || 0;
+  S.salary = parseFloat(document.getElementById('setSalary').value) || 0;
+  S.stockReturn = parseFloat(document.getElementById('setStockReturn').value) || 0;
+  S.financeReturn = parseFloat(document.getElementById('setFinanceReturn').value) || 0;
+  S.loan = parseFloat(document.getElementById('setLoan').value) || 0;
+  S.living = parseFloat(document.getElementById('setLiving').value) || 0;
+  S.other = parseFloat(document.getElementById('setOther').value) || 0;
+  save();
+  renderAll();
+  alert('参数已保存！');
 }
 
-/* ---------- Security ---------- */
-function esc(s) {
-  const d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
+function loadSettings() {
+  document.getElementById('setGoalMin').value = S.goalMin;
+  document.getElementById('setGoalMax').value = S.goalMax;
+  document.getElementById('setStartYear').value = S.startYear;
+  document.getElementById('setStocks').value = S.stocks;
+  document.getElementById('setFinance').value = S.finance;
+  document.getElementById('setSalary').value = S.salary;
+  document.getElementById('setStockReturn').value = S.stockReturn;
+  document.getElementById('setFinanceReturn').value = S.financeReturn;
+  document.getElementById('setLoan').value = S.loan;
+  document.getElementById('setLiving').value = S.living;
+  document.getElementById('setOther').value = S.other;
 }
 
-/* ---------- Init ---------- */
+function resetAll() {
+  S = defaults();
+  save();
+  loadSettings();
+  renderAll();
+}
+
+/* Init */
 function renderAll() {
-  renderIncomes(); renderExpenses(); renderGoals(); updateSummary();
+  renderDashboard();
+  renderOverview();
+  initMonthly();
 }
+loadSettings();
 renderAll();
 </script>
 </body>
 </html>
-
