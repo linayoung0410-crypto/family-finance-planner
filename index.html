@@ -178,7 +178,7 @@ tr:hover{background:#f8fafc}
     <div class="cd">
       <h2>📥 月收入假设</h2>
       <div class="fg">
-        <div class="fi"><label>每月固定工资</label><input id="sSal" type="number" value="0" placeholder="请填写"></div>
+        <div class="fi"><label>每月固定工资</label><input id="sSal" type="number" value="70000"></div>
       </div>
     </div>
     <div class="cd">
@@ -211,7 +211,7 @@ const DEFAULT_HOLDINGS=[
 function defaults(){return{
   goals:[4500000,2000000,1500000],startYear:2026,
   finance:1500000,finReturn:3.5,
-  salary:0,loan:2650,living:0,other:0,
+  salary:70000,loan:2650,living:0,other:0,
   holdings:JSON.parse(JSON.stringify(DEFAULT_HOLDINGS)),
   prices:{},priceTime:'',monthly:{}
 }}
