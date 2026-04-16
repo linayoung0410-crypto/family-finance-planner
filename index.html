@@ -181,7 +181,7 @@ tr:hover{background:#f8fafc}
     </div>
     <div class="cd">
       <h2>📅 自2026年4月起累计利息明细</h2>
-      <p class="ts mb">负债本金 30万 · 年化 4% · 起息日 2024-06-01 · 月息 ¥1,000</p>
+      <p class="ts mb">负债30万 · 年化4% · 起息2024-06-01 · 月息¥1,000 · 累计净利息 = 起息至今 + 当月利息 - 已还</p>
       <div class="table-wrap" style="overflow-x:auto">
         <table class="mtable">
           <thead><tr><th style="text-align:center">月份</th><th>当月利息</th><th>已还金额</th><th>净利息</th><th>累计净利息</th><th>累计利息(自起息)</th></tr></thead>
@@ -664,7 +664,7 @@ function renderDebt(){
   if(!S.debtRepay)S.debtRepay={};
 
   let rows='',labels=[],cumNetData=[],cumTotalData=[];
-  let cumNet=0;
+  let cumNet=interestBeforeTrack;
   let cumTotal=interestBeforeTrack;
   let totalRepay=0;
 
@@ -673,9 +673,9 @@ function renderDebt(){
       cumTotal+=monthlyInt;
       const k='d-'+y+'-'+String(m).padStart(2,'0');
       const repay=S.debtRepay[k]||0;
-      const netInt=monthlyInt-repay;
-      cumNet+=netInt;
+      cumNet+=monthlyInt-repay;
       totalRepay+=repay;
+      const netInt=monthlyInt-repay;
       const label=y+'/'+m;
       labels.push(label);
       cumNetData.push(Math.round(cumNet));
@@ -683,9 +683,9 @@ function renderDebt(){
       rows+=`<tr>
         <td>${y}年${m}月</td>
         <td class="tr2">${fmtF(monthlyInt)}</td>
-        <td><input class="mi" type="number" value="${repay}" data-dk="${k}" onchange="uDebt(this)" style="width:90px"></td>
+        <td style="text-align:right"><input class="mi" type="number" value="${repay}" data-dk="${k}" onchange="uDebt(this)" style="width:100px;text-align:right"></td>
         <td class="tr2" style="font-weight:600;color:${netInt>0?'var(--bad)':'var(--ok)'}">${fmtF(Math.round(netInt))}</td>
-        <td class="tr2" style="color:var(--bad)">${fmtF(Math.round(cumNet))}</td>
+        <td class="tr2" style="font-weight:600;color:var(--bad)">${fmtF(Math.round(cumNet))}</td>
         <td class="tr2 ts">${fmtF(Math.round(cumTotal))}</td>
       </tr>`;
     }
@@ -694,13 +694,13 @@ function renderDebt(){
 
   const totalMonthsAll=monthsBetween(startY,startM,2028,12)+1;
   const totalInterestAll=monthlyInt*totalMonthsAll;
-  const totalGross=monthlyInt*cumNetData.length;
 
   document.getElementById('debtSummary').innerHTML=`
     <div class="sc bg4"><div class="lb">负债本金</div><div class="vl">${fmt(principal)}</div><div class="sb">年化 ${(rate*100).toFixed(1)}%</div></div>
     <div class="sc bg3"><div class="lb">每月利息</div><div class="vl">${fmtF(monthlyInt)}</div><div class="sb">${fmt(principal)} × ${(rate*100).toFixed(1)}% ÷ 12</div></div>
+    <div class="sc bg6"><div class="lb">起息至2026.03已累计</div><div class="vl">${fmt(Math.round(interestBeforeTrack))}</div><div class="sb">${monthsSinceStart}个月 × ${fmtF(monthlyInt)}</div></div>
     <div class="sc bg2"><div class="lb">已还金额合计</div><div class="vl">${fmt(Math.round(totalRepay))}</div><div class="sb">自 2026.04 起</div></div>
-    <div class="sc bg4"><div class="lb">累计净利息</div><div class="vl">${fmt(Math.round(cumNet))}</div><div class="sb">利息 ${fmt(totalGross)} - 已还 ${fmt(totalRepay)}</div></div>
+    <div class="sc bg4"><div class="lb">累计净利息</div><div class="vl">${fmt(Math.round(cumNet))}</div><div class="sb">起息累计 + 月息 - 已还</div></div>
     <div class="sc bg1"><div class="lb">起息至2028底总利息</div><div class="vl">${fmt(Math.round(totalInterestAll))}</div><div class="sb">自${startStr}起共${totalMonthsAll}个月</div></div>
   `;
 
