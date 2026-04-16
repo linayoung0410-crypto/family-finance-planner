@@ -177,9 +177,9 @@ tr:hover{background:#f8fafc}
     <div class="cd">
       <h2>🎯 年度净储蓄目标（元）</h2>
       <div class="fg">
-        <div class="fi"><label>2026 年 (4-12月)</label><input id="sG1" type="number"></div>
-        <div class="fi"><label>2027 年</label><input id="sG2" type="number"></div>
-        <div class="fi"><label>2028 年</label><input id="sG3" type="number"></div>
+        <div class="fi"><label>2026 年 (4-12月) · 累计150万</label><input id="sG1" type="number"></div>
+        <div class="fi"><label>2027 年 · 累计450万</label><input id="sG2" type="number"></div>
+        <div class="fi"><label>2028 年 · 累计800万</label><input id="sG3" type="number"></div>
       </div>
       <p class="ts mt">三年累计：<b id="sGTotal"></b></p>
     </div>
@@ -213,7 +213,7 @@ tr:hover{background:#f8fafc}
 </div>
 
 <script>
-const LS='ff_v4';
+const LS='ff_v5';
 const START_MONTH=4;
 
 const DEFAULT_HOLDINGS=[
@@ -226,7 +226,7 @@ const DEFAULT_HOLDINGS=[
 ];
 
 function defaults(){return{
-  goals:[4500000,2000000,1500000],startYear:2026,startMonth:START_MONTH,
+  goals:[1500000,3000000,3500000],startYear:2026,startMonth:START_MONTH,
   finance:1505058.52,finReturn:3.5,
   stockCash:113713.84,
   salary:70000,gjj:25000,loan:2650,living:0,other:0,
@@ -235,7 +235,7 @@ function defaults(){return{
 }}
 
 let S=load();
-function load(){try{const d=JSON.parse(localStorage.getItem(LS));if(d&&d.goals&&d.gjj!==undefined)return d;return defaults()}catch{return defaults()}}
+function load(){try{const d=JSON.parse(localStorage.getItem(LS));if(d&&d.goals)return d;return defaults()}catch{return defaults()}}
 function save(){localStorage.setItem(LS,JSON.stringify(S))}
 
 function fmt(n){const a=Math.abs(n),s=n<0?'-':'';if(a>=1e8)return s+'¥'+(a/1e4).toFixed(0)+'万';if(a>=1e4)return s+'¥'+(a/1e4).toFixed(a>=1e6?1:2)+'万';return s+'¥'+a.toLocaleString('zh-CN',{maximumFractionDigits:0})}
@@ -260,33 +260,74 @@ document.querySelectorAll('.tb').forEach(b=>b.addEventListener('click',()=>{
   if(b.dataset.t==='stocks')fetchPrices();
 }));
 
-/* Stocks */
+/* Stocks - NetEase JSONP primary, Tencent JSONP fallback */
 function getNetEaseCode(h){return(h.exchange==='sh'?'0':'1')+h.code}
+function getSinaCode(h){return(h.exchange==='sh'?'sh':'sz')+h.code}
+
 function fetchPrices(){
   const icon=document.getElementById('refreshIcon');
   icon.classList.add('spin');
+  document.getElementById('priceTime').textContent='正在获取行情...';
+  fetchNetEase(function(ok){
+    if(!ok)fetchSina(function(){icon.classList.remove('spin');});
+    else icon.classList.remove('spin');
+  });
+}
+
+function fetchNetEase(done){
   const codes=S.holdings.map(getNetEaseCode).join(',');
-  const cb='_sp_'+Date.now();
-  const script=document.createElement('script');
+  const cb='_ne_'+Date.now();
+  const sc=document.createElement('script');
+  let finished=false;
   window[cb]=function(data){
+    if(finished)return;finished=true;
+    let got=0;
     S.holdings.forEach(h=>{
       const key=getNetEaseCode(h);
-      if(data[key]){
+      if(data[key]&&(data[key].price||data[key].yestclose)){
         S.prices[h.code]={price:data[key].price||data[key].yestclose,change:data[key].percent||0,name:data[key].name||h.name};
+        got++;
       }
     });
-    S.priceTime=new Date().toLocaleString('zh-CN');
-    save();renderStocks();renderDash();renderOverview();
-    icon.classList.remove('spin');delete window[cb];script.remove();
+    if(got>0){S.priceTime=new Date().toLocaleString('zh-CN');save();renderStocks();renderDash();renderOverview();}
+    delete window[cb];sc.remove();done(got>0);
   };
-  script.onerror=function(){
-    icon.classList.remove('spin');
-    document.getElementById('priceTime').textContent='行情获取失败，请稍后重试';
-    script.remove();delete window[cb];
+  sc.onerror=function(){if(!finished){finished=true;delete window[cb];sc.remove();done(false);}};
+  sc.src='https://api.money.126.net/data/feed/'+codes+'?callback='+cb;
+  document.head.appendChild(sc);
+  setTimeout(()=>{if(!finished){finished=true;delete window[cb];sc.remove();done(false);}},8000);
+}
+
+function fetchSina(done){
+  const codes=S.holdings.map(getSinaCode).join(',');
+  const sc=document.createElement('script');
+  let finished=false;
+  sc.onload=function(){
+    if(finished)return;finished=true;
+    let got=0;
+    S.holdings.forEach(h=>{
+      const vn='hq_str_'+getSinaCode(h);
+      const raw=window[vn];
+      if(typeof raw==='string'&&raw.length>10){
+        const parts=raw.split(',');
+        const name=parts[0]||h.name;
+        const price=parseFloat(parts[3])||0;
+        const yclose=parseFloat(parts[2])||0;
+        const chg=yclose>0?(price-yclose)/yclose:0;
+        if(price>0){S.prices[h.code]={price,change:chg,name};got++;}
+      }
+      try{delete window[vn]}catch(e){}
+    });
+    if(got>0){S.priceTime=new Date().toLocaleString('zh-CN')+' (新浪)';save();renderStocks();renderDash();renderOverview();}
+    else{document.getElementById('priceTime').textContent='行情获取失败，交易时间外或网络问题';}
+    sc.remove();done();
   };
-  script.src='https://api.money.126.net/data/feed/'+codes+'?callback='+cb;
-  document.head.appendChild(script);
-  setTimeout(()=>{if(window[cb]){icon.classList.remove('spin');delete window[cb];script.remove();document.getElementById('priceTime').textContent='请求超时';}},10000);
+  sc.onerror=function(){
+    if(!finished){finished=true;document.getElementById('priceTime').textContent='行情获取失败，请稍后重试';sc.remove();done();}
+  };
+  sc.src='https://hq.sinajs.cn/list='+codes;
+  document.head.appendChild(sc);
+  setTimeout(()=>{if(!finished){finished=true;sc.remove();document.getElementById('priceTime').textContent='请求超时';done();}},8000);
 }
 
 function getStockValue(){
