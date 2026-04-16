@@ -11,7 +11,7 @@
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.6}
 .hd{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:26px 0;text-align:center}
 .hd h1{font-size:24px;font-weight:700}.hd p{opacity:.85;margin-top:4px;font-size:14px}
-.ct{max-width:1140px;margin:0 auto;padding:20px 16px 60px}
+.ct{max-width:1200px;margin:0 auto;padding:20px 16px 60px}
 .tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
 .tb{padding:9px 20px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;background:var(--card);color:var(--txt2);box-shadow:var(--sh);transition:.2s}
 .tb:hover{color:var(--pri)}.tb.on{background:var(--pri);color:#fff}
@@ -51,27 +51,34 @@ tr:hover{background:#f8fafc}
 .mi:focus{border-color:var(--pri)}
 .pos{color:var(--ok);font-weight:600}.neg{color:var(--bad);font-weight:600}
 .tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:600}
-.tg{background:#dcfce7;color:#16a34a}.tw{background:#fef3c7;color:#b45309}.tr{background:#fee2e2;color:#dc2626}
+.tg{background:#dcfce7;color:#16a34a}.tw{background:#fef3c7;color:#b45309}.tbad{background:#fee2e2;color:#dc2626}
 .cg{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .fb{display:flex;justify-content:space-between;align-items:center}
 .ts{font-size:13px;color:var(--txt2)}.tr2{text-align:right}
 .mt{margin-top:14px}.mb{margin-bottom:8px}
 .stock-up{color:var(--bad);font-weight:600}.stock-dn{color:var(--ok);font-weight:600}
-.stock-row{display:grid;grid-template-columns:80px 1fr 100px 100px 120px 120px 90px;gap:6px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bdr);font-size:14px}
+.stock-row{display:grid;grid-template-columns:80px 1fr 90px 90px 110px 110px 90px;gap:6px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bdr);font-size:14px}
 .stock-row.sh{font-weight:600;color:var(--txt2);font-size:13px;border-bottom:2px solid var(--bdr)}
 .refresh-btn{padding:6px 14px;border:1px solid var(--bdr);border-radius:8px;background:#fff;font-size:13px;cursor:pointer;font-weight:500;transition:.2s}
 .refresh-btn:hover{border-color:var(--pri);color:var(--pri)}
 .spin{animation:spin 1s linear infinite}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.mr{display:grid;grid-template-columns:55px 1fr 1fr 1fr 1fr 70px;gap:6px;align-items:center;padding:9px 0;border-bottom:1px solid var(--bdr);font-size:14px}
-.mr.mh{font-weight:600;color:var(--txt2);font-size:13px;border-bottom:2px solid var(--bdr)}
-@media(max-width:768px){.yg,.cg{grid-template-columns:1fr}.stock-row{grid-template-columns:60px 1fr 80px 80px 90px;font-size:12px}.mr{grid-template-columns:45px repeat(4,1fr) 55px;font-size:12px}.sr{grid-template-columns:1fr 1fr}}
-@media(max-width:480px){.sr{grid-template-columns:1fr}.stock-row{grid-template-columns:50px 1fr 70px 70px 80px;font-size:11px}}
+.mtable{width:100%;border-collapse:collapse;font-size:13px}
+.mtable th{padding:8px 6px;border-bottom:2px solid var(--bdr);color:var(--txt2);font-size:12px;font-weight:600;text-align:right;white-space:nowrap}
+.mtable th:first-child{text-align:center;width:50px}
+.mtable th:last-child{text-align:center}
+.mtable td{padding:6px;border-bottom:1px solid var(--bdr)}
+.mtable td:first-child{text-align:center;font-weight:600}
+.mtable td:last-child{text-align:center}
+.mtable .mi{font-size:12px;padding:5px 6px}
+.inactive-row{opacity:.4}
+@media(max-width:768px){.yg,.cg{grid-template-columns:1fr}.stock-row{grid-template-columns:60px 1fr 70px 70px 90px;font-size:12px}.sr{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.sr{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="hd">
-  <h1>家庭三年理财规划 (2026–2028)</h1>
+  <h1>家庭三年理财规划 (2026.04–2028.12)</h1>
   <p>目标导向 · 实时持仓 · 按月追踪</p>
 </div>
 <div class="ct">
@@ -88,13 +95,13 @@ tr:hover{background:#f8fafc}
   <div class="tp on" id="p-overview">
     <div class="cd">
       <h2>📊 资产构成</h2>
-      <div class="fb mb"><span class="ts">总资产（含实时股票市值）</span><span style="font-size:20px;font-weight:700" id="dTotalAsset"></span></div>
+      <div class="fb mb"><span class="ts">总资产（含实时股票市值 + 灵活资金）</span><span style="font-size:20px;font-weight:700" id="dTotalAsset"></span></div>
       <div class="ab" id="dAssetBar"></div>
       <div id="dAssetLeg" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;font-size:13px"></div>
     </div>
     <div class="cd">
       <h2>🎯 三年目标分解</h2>
-      <p class="ts mb">前高后低：第1年冲刺，第2-3年匀速推进</p>
+      <p class="ts mb">第1年(2026.04-12)冲刺 · 第2-3年匀速推进</p>
       <div class="yg" id="dYearGrid"></div>
     </div>
     <div class="cd">
@@ -112,18 +119,22 @@ tr:hover{background:#f8fafc}
       </div>
       <p class="ts mb" id="priceTime">尚未获取行情</p>
       <div class="stock-row sh">
-        <div>代码</div><div>名称</div><div class="tr2">现价</div><div class="tr2">涨跌幅</div><div class="tr2">持仓市值</div><div class="tr2">持仓成本</div><div class="tr2">盈亏</div>
+        <div>代码</div><div>名称</div><div class="tr2">现价</div><div class="tr2">涨跌幅</div><div class="tr2">持仓市值</div><div class="tr2">成本总额</div><div class="tr2">盈亏</div>
       </div>
       <div id="stockRows"></div>
-      <div class="fb mt" style="padding-top:12px;border-top:2px solid var(--bdr);">
-        <span style="font-weight:700">股票总市值</span>
-        <span style="font-size:20px;font-weight:700" id="stockTotal">--</span>
+      <div style="border-top:2px solid var(--bdr);padding-top:12px;margin-top:4px">
+        <div class="fb"><span style="font-weight:700">股票总市值</span><span style="font-size:18px;font-weight:700" id="stockTotal">--</span></div>
+        <div class="fb mt"><span class="ts">账户灵活资金</span><span style="font-size:16px;font-weight:600" id="stockCash"></span></div>
+        <div class="fb mt"><span style="font-weight:700">股票账户合计</span><span style="font-size:18px;font-weight:700;color:var(--pri)" id="stockAll">--</span></div>
       </div>
     </div>
     <div class="cd">
       <h2>📝 持仓管理</h2>
-      <p class="ts mb">修改持仓后点击"保存"即可更新</p>
+      <p class="ts mb">修改后点击"保存"更新</p>
       <div id="stockEdit"></div>
+      <div class="fg mt" style="max-width:300px">
+        <div class="fi"><label>账户灵活资金 (元)</label><input id="cashInput" type="number" step="0.01"></div>
+      </div>
       <button class="btn bp mt" onclick="saveHoldings()">保存持仓</button>
     </div>
   </div>
@@ -132,14 +143,18 @@ tr:hover{background:#f8fafc}
   <div class="tp" id="p-monthly">
     <div class="cd">
       <div class="fb mb">
-        <h2 style="margin:0">📋 每月收支</h2>
+        <h2 style="margin:0">📋 每月收支追踪</h2>
         <select id="ySel" style="padding:6px 12px;border:1px solid var(--bdr);border-radius:6px;font-size:14px"></select>
       </div>
-      <p class="ts mb">填写实际数据，自动计算净储蓄和达标状态</p>
-      <div class="mr mh"><div>月</div><div class="tr2">工资</div><div class="tr2">投资收益</div><div class="tr2">总支出</div><div class="tr2">净储蓄</div><div>状态</div></div>
-      <div id="mRows"></div>
-      <div class="fb mt" style="padding-top:10px;border-top:2px solid var(--bdr);font-weight:600">
-        <span>年度合计</span><div id="yTotal" style="display:flex;gap:16px;font-size:13px"></div>
+      <p class="ts mb">灰色行表示起始日期前的月份（不计入）· 公积金在对应季度月自动填入</p>
+      <div class="table-wrap" style="overflow-x:auto">
+        <table class="mtable">
+          <thead><tr>
+            <th>月</th><th>固定工资</th><th>公积金</th><th>投资收益</th><th>临时性收入</th><th>总支出</th><th>净储蓄</th><th>状态</th>
+          </tr></thead>
+          <tbody id="mRows"></tbody>
+          <tfoot id="mFoot"></tfoot>
+        </table>
       </div>
     </div>
     <div class="cd">
@@ -160,44 +175,46 @@ tr:hover{background:#f8fafc}
   <!-- 参数设置 -->
   <div class="tp" id="p-settings">
     <div class="cd">
-      <h2>🎯 年度目标（元）</h2>
+      <h2>🎯 年度净储蓄目标（元）</h2>
       <div class="fg">
-        <div class="fi"><label>2026 年目标</label><input id="sG1" type="number" value="4500000"></div>
-        <div class="fi"><label>2027 年目标</label><input id="sG2" type="number" value="2000000"></div>
-        <div class="fi"><label>2028 年目标</label><input id="sG3" type="number" value="1500000"></div>
+        <div class="fi"><label>2026 年 (4-12月)</label><input id="sG1" type="number"></div>
+        <div class="fi"><label>2027 年</label><input id="sG2" type="number"></div>
+        <div class="fi"><label>2028 年</label><input id="sG3" type="number"></div>
       </div>
       <p class="ts mt">三年累计：<b id="sGTotal"></b></p>
     </div>
     <div class="cd">
-      <h2>💰 理财资产（元）</h2>
+      <h2>💰 理财资产</h2>
       <div class="fg">
-        <div class="fi"><label>理财产品金额</label><input id="sFin" type="number" value="1500000"></div>
-        <div class="fi"><label>理财年化收益率 (%)</label><input id="sFinR" type="number" value="3.5" step="0.1"></div>
+        <div class="fi"><label>理财产品总额 (元)</label><input id="sFin" type="number"></div>
+        <div class="fi"><label>理财年化收益率 (%)</label><input id="sFinR" type="number" step="0.1"></div>
       </div>
     </div>
     <div class="cd">
-      <h2>📥 月收入假设</h2>
+      <h2>📥 固定收入（月）</h2>
       <div class="fg">
-        <div class="fi"><label>每月固定工资</label><input id="sSal" type="number" value="70000"></div>
+        <div class="fi"><label>每月固定工资</label><input id="sSal" type="number"></div>
+        <div class="fi"><label>住房公积金 (每季度)</label><input id="sGjj" type="number"></div>
       </div>
     </div>
     <div class="cd">
-      <h2>📤 月支出</h2>
+      <h2>📤 固定支出（月）</h2>
       <div class="fg">
-        <div class="fi"><label>每月贷款</label><input id="sLoan" type="number" value="2650"></div>
-        <div class="fi"><label>每月生活支出</label><input id="sLiv" type="number" value="0" placeholder="请填写"></div>
-        <div class="fi"><label>每月其他支出</label><input id="sOth" type="number" value="0"></div>
+        <div class="fi"><label>每月贷款</label><input id="sLoan" type="number"></div>
+        <div class="fi"><label>每月生活支出</label><input id="sLiv" type="number" placeholder="请填写"></div>
+        <div class="fi"><label>每月其他支出</label><input id="sOth" type="number"></div>
       </div>
     </div>
     <div style="margin-top:14px;display:flex;gap:10px">
       <button class="btn bp" onclick="applySettings()">保存并更新</button>
-      <button class="btn bd" onclick="if(confirm('确定清空？'))resetAll()">重置全部</button>
+      <button class="btn bd" onclick="if(confirm('确定清空所有数据？'))resetAll()">重置全部</button>
     </div>
   </div>
 </div>
 
 <script>
-const LS='ff_v3';
+const LS='ff_v4';
+const START_MONTH=4;
 
 const DEFAULT_HOLDINGS=[
   {code:'002352',name:'顺丰控股',shares:8100,cost:0,exchange:'sz'},
@@ -209,21 +226,30 @@ const DEFAULT_HOLDINGS=[
 ];
 
 function defaults(){return{
-  goals:[4500000,2000000,1500000],startYear:2026,
-  finance:1500000,finReturn:3.5,
-  salary:70000,loan:2650,living:0,other:0,
+  goals:[4500000,2000000,1500000],startYear:2026,startMonth:START_MONTH,
+  finance:1505058.52,finReturn:3.5,
+  stockCash:113713.84,
+  salary:70000,gjj:25000,loan:2650,living:0,other:0,
   holdings:JSON.parse(JSON.stringify(DEFAULT_HOLDINGS)),
   prices:{},priceTime:'',monthly:{}
 }}
 
 let S=load();
-function load(){try{const d=JSON.parse(localStorage.getItem(LS));if(d&&d.goals)return d;return defaults()}catch{return defaults()}}
+function load(){try{const d=JSON.parse(localStorage.getItem(LS));if(d&&d.goals&&d.gjj!==undefined)return d;return defaults()}catch{return defaults()}}
 function save(){localStorage.setItem(LS,JSON.stringify(S))}
 
-/* Helpers */
 function fmt(n){const a=Math.abs(n),s=n<0?'-':'';if(a>=1e8)return s+'¥'+(a/1e4).toFixed(0)+'万';if(a>=1e4)return s+'¥'+(a/1e4).toFixed(a>=1e6?1:2)+'万';return s+'¥'+a.toLocaleString('zh-CN',{maximumFractionDigits:0})}
-function fmtF(n){return(n<0?'-':'')+'¥'+Math.abs(n).toLocaleString('zh-CN',{maximumFractionDigits:0})}
+function fmtF(n){return(n<0?'-':'')+'¥'+Math.abs(Math.round(n)).toLocaleString('zh-CN',{maximumFractionDigits:0})}
+function fmtD(n){return(n<0?'-':'')+'¥'+Math.abs(n).toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function pct(v,t){return t?(v/t*100).toFixed(1):'0'}
+
+function isActive(y,m){return y>S.startYear||(y===S.startYear&&m>=S.startMonth)}
+function isGjjMonth(m){return m===3||m===6||m===9||m===12}
+function totalMonths(){
+  let n=0;
+  for(let y=S.startYear;y<S.startYear+3;y++)for(let m=1;m<=12;m++)if(isActive(y,m))n++;
+  return n;
+}
 
 /* Tabs */
 document.querySelectorAll('.tb').forEach(b=>b.addEventListener('click',()=>{
@@ -234,121 +260,98 @@ document.querySelectorAll('.tb').forEach(b=>b.addEventListener('click',()=>{
   if(b.dataset.t==='stocks')fetchPrices();
 }));
 
-/* Stock price via NetEase JSONP */
+/* Stocks */
 function getNetEaseCode(h){return(h.exchange==='sh'?'0':'1')+h.code}
-
 function fetchPrices(){
   const icon=document.getElementById('refreshIcon');
   icon.classList.add('spin');
   const codes=S.holdings.map(getNetEaseCode).join(',');
   const cb='_sp_'+Date.now();
   const script=document.createElement('script');
-
   window[cb]=function(data){
     S.holdings.forEach(h=>{
       const key=getNetEaseCode(h);
       if(data[key]){
-        S.prices[h.code]={
-          price:data[key].price||data[key].yestclose,
-          change:data[key].percent||0,
-          name:data[key].name||h.name
-        };
+        S.prices[h.code]={price:data[key].price||data[key].yestclose,change:data[key].percent||0,name:data[key].name||h.name};
       }
     });
     S.priceTime=new Date().toLocaleString('zh-CN');
     save();renderStocks();renderDash();renderOverview();
-    icon.classList.remove('spin');
-    delete window[cb];
-    script.remove();
+    icon.classList.remove('spin');delete window[cb];script.remove();
   };
-
   script.onerror=function(){
     icon.classList.remove('spin');
     document.getElementById('priceTime').textContent='行情获取失败，请稍后重试';
     script.remove();delete window[cb];
   };
-
   script.src='https://api.money.126.net/data/feed/'+codes+'?callback='+cb;
   document.head.appendChild(script);
   setTimeout(()=>{if(window[cb]){icon.classList.remove('spin');delete window[cb];script.remove();document.getElementById('priceTime').textContent='请求超时';}},10000);
 }
 
 function getStockValue(){
-  let total=0;
-  S.holdings.forEach(h=>{
-    const p=S.prices[h.code];
-    if(p&&p.price)total+=p.price*h.shares;
-  });
-  return total||S.holdings.reduce((s,h)=>s,0);
+  let t=0;S.holdings.forEach(h=>{const p=S.prices[h.code];if(p&&p.price)t+=p.price*h.shares;});return t;
 }
 
 function renderStocks(){
   const rows=document.getElementById('stockRows');
-  const time=document.getElementById('priceTime');
-  time.textContent=S.priceTime?'最后更新：'+S.priceTime:'点击"刷新行情"获取最新数据';
-
+  document.getElementById('priceTime').textContent=S.priceTime?'最后更新：'+S.priceTime:'点击"刷新行情"获取最新数据';
   let total=0;
   rows.innerHTML=S.holdings.map(h=>{
-    const p=S.prices[h.code];
-    const price=p?p.price:0;
+    const p=S.prices[h.code];const price=p?p.price:0;
     const chg=p?(p.change*100).toFixed(2):0;
-    const mv=price*h.shares;
-    total+=mv;
-    const costTotal=h.cost*h.shares;
-    const pnl=costTotal>0?mv-costTotal:0;
+    const mv=price*h.shares;total+=mv;
+    const ct=h.cost*h.shares;const pnl=ct>0?mv-ct:0;
     const cls=chg>0?'stock-up':chg<0?'stock-dn':'';
-    const pnlCls=pnl>0?'stock-up':pnl<0?'stock-dn':'';
+    const pc=pnl>0?'stock-up':pnl<0?'stock-dn':'';
     return`<div class="stock-row">
-      <div>${h.code}</div>
-      <div>${p?p.name:h.name}</div>
+      <div>${h.code}</div><div>${p?p.name:h.name}</div>
       <div class="tr2 ${cls}">${price?price.toFixed(3):'--'}</div>
       <div class="tr2 ${cls}">${price?chg+'%':'--'}</div>
       <div class="tr2" style="font-weight:600">${price?fmt(mv):'--'}</div>
-      <div class="tr2">${h.cost>0?fmt(costTotal):'--'}</div>
-      <div class="tr2 ${pnlCls}">${costTotal>0?fmtF(pnl):'--'}</div>
+      <div class="tr2">${ct>0?fmt(ct):'--'}</div>
+      <div class="tr2 ${pc}">${ct>0?fmtF(pnl):'--'}</div>
     </div>`;
   }).join('');
-
   document.getElementById('stockTotal').textContent=total>0?fmtF(total):'--';
+  document.getElementById('stockCash').textContent=fmtD(S.stockCash);
+  document.getElementById('stockAll').textContent=total>0?fmtF(total+S.stockCash):'--';
+  document.getElementById('cashInput').value=S.stockCash;
 
-  // edit section
   document.getElementById('stockEdit').innerHTML=S.holdings.map((h,i)=>`
     <div style="display:grid;grid-template-columns:80px 1fr 100px 100px auto;gap:8px;align-items:center;padding:6px 0;font-size:13px">
       <input class="mi" value="${h.code}" onchange="S.holdings[${i}].code=this.value">
       <input class="mi" style="text-align:left" value="${h.name}" onchange="S.holdings[${i}].name=this.value">
-      <input class="mi" type="number" value="${h.shares}" onchange="S.holdings[${i}].shares=parseInt(this.value)||0">
+      <input class="mi" type="number" value="${h.shares}" placeholder="股数" onchange="S.holdings[${i}].shares=parseInt(this.value)||0">
       <input class="mi" type="number" value="${h.cost}" step="0.01" placeholder="成本价" onchange="S.holdings[${i}].cost=parseFloat(this.value)||0">
       <button class="bd" onclick="S.holdings.splice(${i},1);save();renderStocks()">删</button>
     </div>`).join('')+
-    `<div class="mt"><button class="btn bp" style="font-size:13px;padding:6px 14px" onclick="addHolding()">+ 添加持仓</button></div>`;
+    `<div class="mt"><button class="btn bp" style="font-size:13px;padding:6px 14px" onclick="addH()">+ 添加</button></div>`;
 }
-
-function addHolding(){S.holdings.push({code:'',name:'',shares:0,cost:0,exchange:'sz'});save();renderStocks();}
+function addH(){S.holdings.push({code:'',name:'',shares:0,cost:0,exchange:'sz'});save();renderStocks();}
 function saveHoldings(){
-  S.holdings.forEach(h=>{
-    const c=h.code;
-    if(c.startsWith('6')||c.startsWith('5'))h.exchange='sh';
-    else h.exchange='sz';
-  });
-  save();fetchPrices();alert('持仓已保存！');
+  S.holdings.forEach(h=>{h.exchange=(h.code.startsWith('6')||h.code.startsWith('5'))?'sh':'sz';});
+  S.stockCash=parseFloat(document.getElementById('cashInput').value)||0;
+  save();fetchPrices();alert('已保存！');
 }
 
 /* Dashboard */
 function renderDash(){
   const sv=getStockValue();
-  const totalA=sv+S.finance;
+  const totalA=sv+S.stockCash+S.finance;
   const goalTotal=S.goals.reduce((a,b)=>a+b,0);
   const saved=getTotalSaved();
   const mInv=S.finance*S.finReturn/100/12;
+  const mGjj=S.gjj/3;
   const mExp=S.loan+S.living+S.other;
-  const mNet=S.salary+mInv-mExp;
+  const mNet=S.salary+mGjj+mInv-mExp;
 
   document.getElementById('dash').innerHTML=`
-    <div class="sc bg1"><div class="lb">总资产</div><div class="vl">${fmt(totalA)}</div><div class="sb">股票 ${fmt(sv)} + 理财 ${fmt(S.finance)}</div></div>
+    <div class="sc bg1"><div class="lb">总资产</div><div class="vl">${fmt(totalA)}</div><div class="sb">股票账户 ${fmt(sv+S.stockCash)} + 理财 ${fmt(S.finance)}</div></div>
     <div class="sc bg2"><div class="lb">三年累计目标</div><div class="vl">${fmt(goalTotal)}</div><div class="sb">${fmt(S.goals[0])} / ${fmt(S.goals[1])} / ${fmt(S.goals[2])}</div></div>
     <div class="sc bg5"><div class="lb">已累计净储蓄</div><div class="vl">${fmt(saved)}</div><div class="sb">完成 ${pct(saved,goalTotal)}%</div></div>
-    <div class="sc bg3"><div class="lb">预估月净储蓄</div><div class="vl">${fmt(mNet)}</div><div class="sb">工资+投资收益-支出</div></div>
-    <div class="sc ${sv>0?'bg6':'bg4'}"><div class="lb">股票实时市值</div><div class="vl">${sv>0?fmt(sv):'未获取'}</div><div class="sb">${S.priceTime?'更新 '+S.priceTime:'点击持仓刷新'}</div></div>
+    <div class="sc bg3"><div class="lb">预估月均净储蓄</div><div class="vl">${fmt(mNet)}</div><div class="sb">含工资+公积金+理财收益</div></div>
+    <div class="sc ${sv>0?'bg6':'bg4'}"><div class="lb">股票实时市值</div><div class="vl">${sv>0?fmt(sv):'未获取'}</div><div class="sb">${S.priceTime?'更新于 '+S.priceTime:'点击持仓刷新'}</div></div>
   `;
 }
 
@@ -356,8 +359,9 @@ function getTotalSaved(){
   let t=0;
   for(let y=S.startYear;y<S.startYear+3;y++)
     for(let m=1;m<=12;m++){
+      if(!isActive(y,m))continue;
       const d=S.monthly[y+'-'+String(m).padStart(2,'0')];
-      if(d&&d.filled)t+=d.salary+d.invest-d.expense;
+      if(d&&d.filled)t+=d.salary+d.gjj+d.invest+d.extra-d.expense;
     }
   return t;
 }
@@ -365,66 +369,75 @@ function getTotalSaved(){
 /* Overview */
 function renderOverview(){
   const sv=getStockValue();
-  const totalA=sv+S.finance;
-  const sPct=totalA>0?(sv/totalA*100).toFixed(1):50;
+  const totalA=sv+S.stockCash+S.finance;
+  const svAll=sv+S.stockCash;
+  const sPct=totalA>0?(svAll/totalA*100).toFixed(1):50;
   const fPct=totalA>0?(S.finance/totalA*100).toFixed(1):50;
 
   document.getElementById('dTotalAsset').textContent=fmtF(totalA);
   document.getElementById('dAssetBar').innerHTML=`
-    <div style="width:${sPct}%;background:#ef4444">股票 ${sPct}%</div>
+    <div style="width:${sPct}%;background:#ef4444">股票账户 ${sPct}%</div>
     <div style="width:${fPct}%;background:#4f46e5">理财 ${fPct}%</div>`;
   document.getElementById('dAssetLeg').innerHTML=`
-    <span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#ef4444;margin-right:4px"></i>股票 ${fmt(sv)}</span>
-    <span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#4f46e5;margin-right:4px"></i>理财 ${fmt(S.finance)}</span>`;
+    <span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#ef4444;margin-right:4px"></i>股票账户 ${fmt(svAll)}（含灵活资金 ${fmtD(S.stockCash)}）</span>
+    <span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#4f46e5;margin-right:4px"></i>理财 ${fmtD(S.finance)}</span>`;
 
-  const years=[S.startYear,S.startYear+1,S.startYear+2];
+  const yrs=[S.startYear,S.startYear+1,S.startYear+2];
   let cumGoal=0;
-  document.getElementById('dYearGrid').innerHTML=years.map((y,i)=>{
+  document.getElementById('dYearGrid').innerHTML=yrs.map((y,i)=>{
     const g=S.goals[i];cumGoal+=g;
     const saved=getYearSaved(y);
-    const mTarget=i===0?'':fmt(Math.round(g/12))+'/月';
+    const am=i===0?(12-S.startMonth+1):12;
+    const mTgt=Math.round(g/am);
     const p=Math.min(saved/g*100,100).toFixed(1);
     const cls=p>=80?'pfg':p>=40?'pfy':'pfr';
+    const period=i===0?`${y}.${S.startMonth}-12`:`${y}.1-12`;
     return`<div class="yc">
-      <h3>第${i+1}年（${y}）</h3>
+      <h3>第${i+1}年（${period}）</h3>
       <div class="big">${fmt(g)}</div>
-      <div class="desc">累计 ${fmt(cumGoal)}${mTarget?' · '+mTarget:''}</div>
+      <div class="desc">累计 ${fmt(cumGoal)} · ${fmt(mTgt)}/月×${am}月</div>
       <div class="pg"><div class="pf ${cls}" style="width:${p}%"></div></div>
       <div class="ts">已完成 ${fmt(saved)}（${p}%）</div>
     </div>`;
   }).join('');
-
   renderProj();
 }
 
 function getYearSaved(y){
   let t=0;
-  for(let m=1;m<=12;m++){const d=S.monthly[y+'-'+String(m).padStart(2,'0')];if(d&&d.filled)t+=d.salary+d.invest-d.expense;}
+  for(let m=1;m<=12;m++){
+    if(!isActive(y,m))continue;
+    const d=S.monthly[y+'-'+String(m).padStart(2,'0')];
+    if(d&&d.filled)t+=d.salary+d.gjj+d.invest+d.extra-d.expense;
+  }
   return t;
 }
 
 function renderProj(){
   const mInv=S.finance*S.finReturn/100/12;
+  const mGjj=S.gjj/3;
   const mExp=S.loan+S.living+S.other;
-  const mNet=S.salary+mInv-mExp;
-  const proj3=mNet*36;
+  const mNet=S.salary+mGjj+mInv-mExp;
+  const tm=totalMonths();
+  const proj=mNet*tm;
   const goalTotal=S.goals.reduce((a,b)=>a+b,0);
-  const hit=proj3>=goalTotal;
+  const hit=proj>=goalTotal;
 
   document.getElementById('dProj').innerHTML=`
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
       <div><span class="ts">月工资</span><div style="font-size:16px;font-weight:600">${fmtF(S.salary)}</div></div>
-      <div><span class="ts">月投资收益</span><div style="font-size:16px;font-weight:600">${fmtF(Math.round(mInv))}</div></div>
+      <div><span class="ts">公积金(月均)</span><div style="font-size:16px;font-weight:600">${fmtF(Math.round(mGjj))}</div></div>
+      <div><span class="ts">理财收益(月)</span><div style="font-size:16px;font-weight:600">${fmtF(Math.round(mInv))}</div></div>
       <div><span class="ts">月总支出</span><div style="font-size:16px;font-weight:600">${fmtF(mExp)}</div></div>
-      <div><span class="ts">月净储蓄</span><div style="font-size:16px;font-weight:600;color:${mNet>=0?'var(--ok)':'var(--bad)'}">${fmtF(Math.round(mNet))}</div></div>
+      <div><span class="ts">月均净储蓄</span><div style="font-size:16px;font-weight:600;color:${mNet>=0?'var(--ok)':'var(--bad)'}">${fmtF(Math.round(mNet))}</div></div>
     </div>
     <div style="margin-top:14px;padding:14px;border-radius:8px;background:${hit?'#f0fdf4':'#fef2f2'}">
       <div style="font-weight:600;font-size:15px;color:${hit?'var(--ok)':'var(--bad)'}">
-        ${hit?'✅ 按当前参数可达标':'⚠️ 按当前参数无法达标'}
+        ${hit?'✅ 按当前固定收入参数可达标':'⚠️ 仅靠固定收入无法达标（需投资增值+临时收入补充）'}
       </div>
-      <div class="ts mt">3年预估储蓄：<b>${fmt(proj3)}</b>（目标 ${fmt(goalTotal)}）</div>
-      ${!hit?'<div class="ts mt">月净储蓄需达 <b>'+fmt(Math.ceil(goalTotal/36))+'/月</b> 才能达标</div>':''}
-      ${S.salary===0?'<div class="ts mt" style="color:var(--warn)">⚠️ 月工资未填写，请到"参数设置"补充</div>':''}
+      <div class="ts mt">${tm}个月固定收入预估储蓄：<b>${fmt(proj)}</b>（目标 ${fmt(goalTotal)}）</div>
+      <div class="ts mt">缺口需由 <b>股票投资增值</b> 和 <b>临时性收入</b> 补充：约 <b>${fmt(goalTotal-proj)}</b></div>
+      ${S.living===0?'<div class="ts mt" style="color:var(--warn)">⚠️ 生活支出未填写，建议到"参数设置"补充</div>':''}
     </div>`;
 }
 
@@ -439,58 +452,76 @@ function initMonthly(){
   renderMonthly();
 }
 
+function mKey(y,m){return y+'-'+String(m).padStart(2,'0')}
+function mDefault(y,m){
+  const mInv=Math.round(S.finance*S.finReturn/100/12);
+  const mExp=Math.round(S.loan+S.living+S.other);
+  const gjj=isGjjMonth(m)?S.gjj:0;
+  return{salary:S.salary,gjj:gjj,invest:mInv,extra:0,expense:mExp,filled:false};
+}
+
 function renderMonthly(){
-  const wrap=document.getElementById('mRows');
-  const mInv=S.finance*S.finReturn/100/12;
-  const mExp=S.loan+S.living+S.other;
+  const tbody=document.getElementById('mRows');
   const yi=curYear-S.startYear;
   const yearGoal=S.goals[yi]||0;
-  const mTarget=yearGoal/12;
+  const activeMonths=[];
+  for(let m=1;m<=12;m++)if(isActive(curYear,m))activeMonths.push(m);
+  const mTarget=activeMonths.length>0?yearGoal/activeMonths.length:0;
 
-  let html='',ys=0,yv=0,ye=0,yn=0;
+  let html='',ys=0,yg=0,yv=0,yx=0,ye=0,yn=0;
   for(let m=1;m<=12;m++){
-    const k=curYear+'-'+String(m).padStart(2,'0');
-    const d=S.monthly[k]||{salary:S.salary,invest:Math.round(mInv),expense:Math.round(mExp),filled:false};
-    const net=d.salary+d.invest-d.expense;
-    ys+=d.salary;yv+=d.invest;ye+=d.expense;yn+=net;
-    const cls=net>=mTarget?'tg':net>=mTarget*.7?'tw':'tr';
-    const st=net>=mTarget?'达标':net>=mTarget*.7?'接近':'落后';
-    html+=`<div class="mr">
-      <div style="font-weight:600">${m}月</div>
-      <div><input class="mi" type="number" value="${d.salary}" data-k="${k}" data-f="salary" onchange="uM(this)"></div>
-      <div><input class="mi" type="number" value="${d.invest}" data-k="${k}" data-f="invest" onchange="uM(this)"></div>
-      <div><input class="mi" type="number" value="${d.expense}" data-k="${k}" data-f="expense" onchange="uM(this)"></div>
-      <div class="tr2 ${net>=0?'pos':'neg'}">${fmtF(net)}</div>
-      <div><span class="tag ${cls}">${st}</span></div>
-    </div>`;
+    const k=mKey(curYear,m);
+    const active=isActive(curYear,m);
+    const d=S.monthly[k]||mDefault(curYear,m);
+    const net=d.salary+d.gjj+d.invest+d.extra-d.expense;
+    if(active){ys+=d.salary;yg+=d.gjj;yv+=d.invest;yx+=d.extra;ye+=d.expense;yn+=net;}
+    const cls=!active?'':net>=mTarget?'tg':net>=mTarget*.7?'tw':'tbad';
+    const st=!active?'--':net>=mTarget?'达标':net>=mTarget*.7?'接近':'落后';
+    const rc=!active?'inactive-row':'';
+    html+=`<tr class="${rc}">
+      <td>${m}月</td>
+      <td><input class="mi" type="number" value="${d.salary}" data-k="${k}" data-f="salary" onchange="uM(this)" ${!active?'disabled':''}></td>
+      <td><input class="mi" type="number" value="${d.gjj}" data-k="${k}" data-f="gjj" onchange="uM(this)" ${!active?'disabled':''}></td>
+      <td><input class="mi" type="number" value="${d.invest}" data-k="${k}" data-f="invest" onchange="uM(this)" ${!active?'disabled':''}></td>
+      <td><input class="mi" type="number" value="${d.extra}" data-k="${k}" data-f="extra" onchange="uM(this)" ${!active?'disabled':''}></td>
+      <td><input class="mi" type="number" value="${d.expense}" data-k="${k}" data-f="expense" onchange="uM(this)" ${!active?'disabled':''}></td>
+      <td class="tr2 ${net>=0?'pos':'neg'}" style="font-weight:600">${active?fmtF(net):'--'}</td>
+      <td><span class="tag ${cls}">${st}</span></td>
+    </tr>`;
   }
-  wrap.innerHTML=html;
-  document.getElementById('yTotal').innerHTML=`
-    <span>工资 ${fmtF(ys)}</span><span>投资 ${fmtF(yv)}</span><span>支出 ${fmtF(ye)}</span>
-    <span class="${yn>=0?'pos':'neg'}">净存 ${fmtF(yn)}</span><span class="ts">目标 ${fmt(yearGoal)}</span>`;
+  tbody.innerHTML=html;
+  document.getElementById('mFoot').innerHTML=`<tr style="font-weight:600;border-top:2px solid var(--bdr)">
+    <td>合计</td><td class="tr2">${fmtF(ys)}</td><td class="tr2">${fmtF(yg)}</td><td class="tr2">${fmtF(yv)}</td><td class="tr2">${fmtF(yx)}</td><td class="tr2">${fmtF(ye)}</td>
+    <td class="tr2 ${yn>=0?'pos':'neg'}">${fmtF(yn)}</td><td class="ts">目标${fmt(yearGoal)}</td>
+  </tr>`;
   renderCum();
 }
 
 function uM(el){
   const k=el.dataset.k,f=el.dataset.f;
-  const mInv=S.finance*S.finReturn/100/12,mExp=S.loan+S.living+S.other;
-  if(!S.monthly[k])S.monthly[k]={salary:S.salary,invest:Math.round(mInv),expense:Math.round(mExp),filled:true};
-  S.monthly[k][f]=parseFloat(el.value)||0;S.monthly[k].filled=true;
+  const parts=k.split('-');const y=parseInt(parts[0]),m=parseInt(parts[1]);
+  if(!S.monthly[k])S.monthly[k]=mDefault(y,m);
+  S.monthly[k][f]=parseFloat(el.value)||0;
+  S.monthly[k].filled=true;
   save();renderMonthly();renderDash();renderOverview();
 }
 
 function renderCum(){
   let cum=0,rows='';
   for(let i=0;i<3;i++){
-    const y=S.startYear+i;
-    let yn=0;
-    for(let m=1;m<=12;m++){const d=S.monthly[y+'-'+String(m).padStart(2,'0')];if(d&&d.filled)yn+=d.salary+d.invest-d.expense;}
+    const y=S.startYear+i;let yn=0;
+    for(let m=1;m<=12;m++){
+      if(!isActive(y,m))continue;
+      const d=S.monthly[mKey(y,m)];
+      if(d&&d.filled)yn+=d.salary+d.gjj+d.invest+d.extra-d.expense;
+    }
     cum+=yn;
     const cumGoal=S.goals.slice(0,i+1).reduce((a,b)=>a+b,0);
-    const p=Math.min(cum/cumGoal*100,100).toFixed(1);
+    const p=cumGoal>0?Math.min(cum/cumGoal*100,100).toFixed(1):0;
     const cls=p>=80?'pfg':p>=40?'pfy':'pfr';
+    const am=i===0?(12-S.startMonth+1):12;
     rows+=`<div style="padding:10px 0;border-bottom:1px solid var(--bdr)">
-      <div class="fb mb"><span style="font-weight:600">${y}年（年度目标 ${fmt(S.goals[i])}）</span><span class="ts">${fmt(cum)} / ${fmt(cumGoal)} 累计</span></div>
+      <div class="fb mb"><span style="font-weight:600">${y}年（${am}个月 · 目标 ${fmt(S.goals[i])}）</span><span class="ts">${fmt(cum)} / ${fmt(cumGoal)} 累计</span></div>
       <div class="pg"><div class="pf ${cls}" style="width:${p}%"></div></div>
     </div>`;
   }
@@ -504,27 +535,28 @@ let c1,c2,c3;
 function renderCharts(){
   if(c1)c1.destroy();if(c2)c2.destroy();if(c3)c3.destroy();
   const labels=[],netD=[],cumD=[],tgtD=[];
-  let cum=0,cumGoal=0;
-  const mInv=S.finance*S.finReturn/100/12,mExp=S.loan+S.living+S.other;
-
+  let cum=0;
   for(let i=0;i<3;i++){
-    const y=S.startYear+i;
-    const yGoal=S.goals[i];
+    const y=S.startYear+i;const yGoal=S.goals[i];
+    const am=i===0?(12-S.startMonth+1):12;
+    let mi=0;
     for(let m=1;m<=12;m++){
+      if(!isActive(y,m))continue;
+      mi++;
       labels.push(y+'/'+m);
-      const k=y+'-'+String(m).padStart(2,'0');
-      const d=S.monthly[k]||{salary:S.salary,invest:Math.round(mInv),expense:Math.round(mExp)};
-      const net=d.salary+d.invest-d.expense;
+      const k=mKey(y,m);
+      const d=S.monthly[k]||mDefault(y,m);
+      const net=d.salary+d.gjj+d.invest+d.extra-d.expense;
       netD.push(net);cum+=net;cumD.push(cum);
-      cumGoal=S.goals.slice(0,i).reduce((a,b)=>a+b,0)+yGoal/12*m;
-      tgtD.push(cumGoal);
+      const prevGoal=S.goals.slice(0,i).reduce((a,b)=>a+b,0);
+      tgtD.push(prevGoal+yGoal/am*mi);
     }
   }
 
-  c1=new Chart(document.getElementById('ch1'),{type:'bar',data:{labels,datasets:[{label:'月净储蓄',data:netD,backgroundColor:netD.map(v=>v>=0?'#22c55e':'#ef4444'),borderRadius:3,maxBarThickness:20}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>fmt(v)}}}}});
+  c1=new Chart(document.getElementById('ch1'),{type:'bar',data:{labels,datasets:[{label:'月净储蓄',data:netD,backgroundColor:netD.map(v=>v>=0?'#22c55e':'#ef4444'),borderRadius:3,maxBarThickness:18}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>fmt(v)}}}}});
 
   const sv=getStockValue();
-  c2=new Chart(document.getElementById('ch2'),{type:'doughnut',data:{labels:['股票','理财'],datasets:[{data:[sv||S.holdings.length*250000,S.finance],backgroundColor:['#ef4444','#4f46e5']}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
+  c2=new Chart(document.getElementById('ch2'),{type:'doughnut',data:{labels:['股票市值','账户灵活资金','理财'],datasets:[{data:[sv||0,S.stockCash,S.finance],backgroundColor:['#ef4444','#f59e0b','#4f46e5']}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
 
   c3=new Chart(document.getElementById('ch3'),{type:'line',data:{labels,datasets:[
     {label:'累计储蓄',data:cumD,borderColor:'#4f46e5',backgroundColor:'rgba(79,70,229,.08)',fill:true,tension:.3,pointRadius:1},
@@ -536,7 +568,8 @@ function renderCharts(){
 function applySettings(){
   S.goals=[pf('sG1'),pf('sG2'),pf('sG3')];
   S.finance=pf('sFin');S.finReturn=pf('sFinR');
-  S.salary=pf('sSal');S.loan=pf('sLoan');S.living=pf('sLiv');S.other=pf('sOth');
+  S.salary=pf('sSal');S.gjj=pf('sGjj');
+  S.loan=pf('sLoan');S.living=pf('sLiv');S.other=pf('sOth');
   save();renderAll();alert('已保存！');
 }
 function pf(id){return parseFloat(document.getElementById(id).value)||0}
@@ -547,19 +580,18 @@ function loadSettings(){
   document.getElementById('sFin').value=S.finance;
   document.getElementById('sFinR').value=S.finReturn;
   document.getElementById('sSal').value=S.salary;
+  document.getElementById('sGjj').value=S.gjj;
   document.getElementById('sLoan').value=S.loan;
   document.getElementById('sLiv').value=S.living;
   document.getElementById('sOth').value=S.other;
-  updGoalTotal();
+  updGT();
 }
-function updGoalTotal(){
-  const t=(parseFloat(document.getElementById('sG1').value)||0)+(parseFloat(document.getElementById('sG2').value)||0)+(parseFloat(document.getElementById('sG3').value)||0);
+function updGT(){
+  const t=[pf('sG1'),pf('sG2'),pf('sG3')].reduce((a,b)=>a+b,0);
   document.getElementById('sGTotal').textContent=fmtF(t);
 }
-['sG1','sG2','sG3'].forEach(id=>document.getElementById(id).addEventListener('input',updGoalTotal));
-
+['sG1','sG2','sG3'].forEach(id=>document.getElementById(id).addEventListener('input',updGT));
 function resetAll(){S=defaults();save();loadSettings();renderAll();}
-
 function renderAll(){renderDash();renderOverview();initMonthly();}
 loadSettings();renderAll();
 </script>
