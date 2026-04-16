@@ -184,7 +184,7 @@ tr:hover{background:#f8fafc}
       <p class="ts mb">负债本金 30万 · 年化 4% · 起息日 2024-06-01 · 月息 ¥1,000</p>
       <div class="table-wrap" style="overflow-x:auto">
         <table class="mtable">
-          <thead><tr><th style="text-align:center">月份</th><th>当月利息</th><th>累计利息(自起息)</th><th>累计利息(自2026.04)</th></tr></thead>
+          <thead><tr><th style="text-align:center">月份</th><th>当月利息</th><th>已还金额</th><th>净利息</th><th>累计净利息</th><th>累计利息(自起息)</th></tr></thead>
           <tbody id="debtRows"></tbody>
         </table>
       </div>
@@ -661,23 +661,32 @@ function renderDebt(){
   const monthsSinceStart=monthsBetween(startY,startM,trackFrom.y,trackFrom.m);
   const interestBeforeTrack=monthlyInt*monthsSinceStart;
 
-  let rows='',labels=[],cumTrackData=[],cumTotalData=[];
-  let cumTrack=0;
+  if(!S.debtRepay)S.debtRepay={};
+
+  let rows='',labels=[],cumNetData=[],cumTotalData=[];
+  let cumNet=0;
   let cumTotal=interestBeforeTrack;
+  let totalRepay=0;
 
   for(let y=2026;y<=2028;y++){
     for(let m=(y===2026?4:1);m<=12;m++){
-      cumTrack+=monthlyInt;
       cumTotal+=monthlyInt;
+      const k='d-'+y+'-'+String(m).padStart(2,'0');
+      const repay=S.debtRepay[k]||0;
+      const netInt=monthlyInt-repay;
+      cumNet+=netInt;
+      totalRepay+=repay;
       const label=y+'/'+m;
       labels.push(label);
-      cumTrackData.push(Math.round(cumTrack));
+      cumNetData.push(Math.round(cumNet));
       cumTotalData.push(Math.round(cumTotal));
       rows+=`<tr>
         <td>${y}年${m}月</td>
         <td class="tr2">${fmtF(monthlyInt)}</td>
-        <td class="tr2">${fmtF(Math.round(cumTotal))}</td>
-        <td class="tr2" style="font-weight:600;color:var(--bad)">${fmtF(Math.round(cumTrack))}</td>
+        <td><input class="mi" type="number" value="${repay}" data-dk="${k}" onchange="uDebt(this)" style="width:90px"></td>
+        <td class="tr2" style="font-weight:600;color:${netInt>0?'var(--bad)':'var(--ok)'}">${fmtF(Math.round(netInt))}</td>
+        <td class="tr2" style="color:var(--bad)">${fmtF(Math.round(cumNet))}</td>
+        <td class="tr2 ts">${fmtF(Math.round(cumTotal))}</td>
       </tr>`;
     }
   }
@@ -685,20 +694,26 @@ function renderDebt(){
 
   const totalMonthsAll=monthsBetween(startY,startM,2028,12)+1;
   const totalInterestAll=monthlyInt*totalMonthsAll;
+  const totalGross=monthlyInt*cumNetData.length;
 
   document.getElementById('debtSummary').innerHTML=`
     <div class="sc bg4"><div class="lb">负债本金</div><div class="vl">${fmt(principal)}</div><div class="sb">年化 ${(rate*100).toFixed(1)}%</div></div>
     <div class="sc bg3"><div class="lb">每月利息</div><div class="vl">${fmtF(monthlyInt)}</div><div class="sb">${fmt(principal)} × ${(rate*100).toFixed(1)}% ÷ 12</div></div>
-    <div class="sc bg6"><div class="lb">起息至今已产生利息</div><div class="vl">${fmt(Math.round(interestBeforeTrack+cumTrackData[0]-monthlyInt))}</div><div class="sb">自 ${startStr} 起至今</div></div>
-    <div class="sc bg4"><div class="lb">2026.04-2028.12累计利息</div><div class="vl">${fmt(Math.round(cumTrack))}</div><div class="sb">共 ${cumTrackData.length} 个月</div></div>
-    <div class="sc bg1"><div class="lb">起息至2028年底总利息</div><div class="vl">${fmt(Math.round(totalInterestAll))}</div><div class="sb">${totalMonthsAll} 个月</div></div>
+    <div class="sc bg2"><div class="lb">已还金额合计</div><div class="vl">${fmt(Math.round(totalRepay))}</div><div class="sb">自 2026.04 起</div></div>
+    <div class="sc bg4"><div class="lb">累计净利息</div><div class="vl">${fmt(Math.round(cumNet))}</div><div class="sb">利息 ${fmt(totalGross)} - 已还 ${fmt(totalRepay)}</div></div>
+    <div class="sc bg1"><div class="lb">起息至2028底总利息</div><div class="vl">${fmt(Math.round(totalInterestAll))}</div><div class="sb">自${startStr}起共${totalMonthsAll}个月</div></div>
   `;
 
   if(chDebt)chDebt.destroy();
   chDebt=new Chart(document.getElementById('chDebt'),{type:'line',data:{labels,datasets:[
-    {label:'累计利息(自2026.04)',data:cumTrackData,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.08)',fill:true,tension:.2,pointRadius:2},
-    {label:'累计利息(自起息日)',data:cumTotalData,borderColor:'#f59e0b',borderDash:[6,3],pointRadius:0,fill:false}
+    {label:'累计净利息(扣除已还)',data:cumNetData,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.08)',fill:true,tension:.2,pointRadius:2},
+    {label:'累计总利息(自起息日)',data:cumTotalData,borderColor:'#f59e0b',borderDash:[6,3],pointRadius:0,fill:false}
   ]},options:{responsive:true,scales:{y:{ticks:{callback:v=>fmt(v)}}},plugins:{legend:{position:'bottom'}}}});
+}
+function uDebt(el){
+  const k=el.dataset.dk;
+  S.debtRepay[k]=parseFloat(el.value)||0;
+  save();renderDebt();
 }
 function applyDebt(){renderDebt();}
 
