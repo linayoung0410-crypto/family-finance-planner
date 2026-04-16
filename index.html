@@ -184,7 +184,7 @@ tr:hover{background:#f8fafc}
       <p class="ts mb">负债30万 · 年化4% · 起息2024-06-01 · 月息¥1,000 · 累计净利息 = 起息至今 + 当月利息 - 已还</p>
       <div class="table-wrap" style="overflow-x:auto">
         <table class="mtable">
-          <thead><tr><th style="text-align:center">月份</th><th>当月利息</th><th>已还金额</th><th>净利息</th><th>累计净利息</th><th>累计利息(自起息)</th></tr></thead>
+          <thead><tr><th style="text-align:center">月份</th><th>当月利息</th><th>已还金额</th><th>累计净利息</th></tr></thead>
           <tbody id="debtRows"></tbody>
         </table>
       </div>
@@ -684,9 +684,7 @@ function renderDebt(){
         <td>${y}年${m}月</td>
         <td class="tr2">${fmtF(monthlyInt)}</td>
         <td style="text-align:right"><input class="mi" type="number" value="${repay}" data-dk="${k}" onchange="uDebt(this)" style="width:100px;text-align:right"></td>
-        <td class="tr2" style="font-weight:600;color:${netInt>0?'var(--bad)':'var(--ok)'}">${fmtF(Math.round(netInt))}</td>
         <td class="tr2" style="font-weight:600;color:var(--bad)">${fmtF(Math.round(cumNet))}</td>
-        <td class="tr2 ts">${fmtF(Math.round(cumTotal))}</td>
       </tr>`;
     }
   }
