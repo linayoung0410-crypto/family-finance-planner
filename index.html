@@ -260,46 +260,78 @@ document.querySelectorAll('.tb').forEach(b=>b.addEventListener('click',()=>{
   if(b.dataset.t==='stocks')fetchPrices();
 }));
 
-/* Stocks - Tencent API */
+/* Stocks - Tencent API via CORS proxy (primary) + direct script (fallback) */
 function getTencentCode(h){return(h.exchange==='sh'?'sh':'sz')+h.code}
+
+function parseTencentData(text){
+  let got=0;
+  S.holdings.forEach(h=>{
+    const vn='v_'+getTencentCode(h);
+    const re=new RegExp(vn+'="([^"]+)"');
+    const match=text.match(re);
+    if(match&&match[1]){
+      const p=match[1].split('~');
+      const name=p[1]||h.name;
+      const price=parseFloat(p[3])||0;
+      const yclose=parseFloat(p[4])||0;
+      const chg=yclose>0?(price-yclose)/yclose:0;
+      if(price>0){S.prices[h.code]={price,change:chg,name};got++;}
+    }
+  });
+  return got;
+}
 
 function fetchPrices(){
   const icon=document.getElementById('refreshIcon');
   icon.classList.add('spin');
   document.getElementById('priceTime').textContent='正在获取行情...';
   const codes=S.holdings.map(getTencentCode).join(',');
+  const url='https://qt.gtimg.cn/q='+codes;
+
+  fetch('https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(url))
+    .then(r=>r.text())
+    .then(text=>{
+      const got=parseTencentData(text);
+      if(got>0){
+        S.priceTime=new Date().toLocaleString('zh-CN');
+        save();renderStocks();renderDash();renderOverview();
+      } else {
+        document.getElementById('priceTime').textContent='未解析到数据，可能非交易时段';
+      }
+      icon.classList.remove('spin');
+    })
+    .catch(()=>{
+      fetchDirect(codes,icon);
+    });
+}
+
+function fetchDirect(codes,icon){
   const sc=document.createElement('script');
-  let finished=false;
+  let done=false;
   sc.onload=function(){
-    if(finished)return;finished=true;
+    if(done)return;done=true;
     let got=0;
     S.holdings.forEach(h=>{
       const vn='v_'+getTencentCode(h);
-      const raw=window[vn];
-      if(typeof raw==='string'&&raw.length>10){
-        const p=raw.split('~');
-        const name=p[1]||h.name;
+      if(typeof window[vn]==='string'&&window[vn].length>10){
+        const p=window[vn].split('~');
         const price=parseFloat(p[3])||0;
         const yclose=parseFloat(p[4])||0;
         const chg=yclose>0?(price-yclose)/yclose:0;
-        if(price>0){S.prices[h.code]={price,change:chg,name};got++;}
+        if(price>0){S.prices[h.code]={price,change:chg,name:p[1]||h.name};got++;}
       }
     });
-    if(got>0){
-      S.priceTime=new Date().toLocaleString('zh-CN');
-      save();renderStocks();renderDash();renderOverview();
-    } else {
-      document.getElementById('priceTime').textContent='未获取到数据，可能非交易时段';
-    }
+    if(got>0){S.priceTime=new Date().toLocaleString('zh-CN');save();renderStocks();renderDash();renderOverview();}
+    else{document.getElementById('priceTime').textContent='获取失败，请稍后重试';}
     icon.classList.remove('spin');sc.remove();
   };
   sc.onerror=function(){
-    if(!finished){finished=true;icon.classList.remove('spin');
+    if(!done){done=true;icon.classList.remove('spin');
     document.getElementById('priceTime').textContent='行情获取失败，请稍后重试';sc.remove();}
   };
   sc.src='https://qt.gtimg.cn/q='+codes;
   document.head.appendChild(sc);
-  setTimeout(()=>{if(!finished){finished=true;icon.classList.remove('spin');sc.remove();
+  setTimeout(()=>{if(!done){done=true;icon.classList.remove('spin');sc.remove();
     document.getElementById('priceTime').textContent='请求超时';}},10000);
 }
 
@@ -608,6 +640,7 @@ function updGT(){
 function resetAll(){S=defaults();save();loadSettings();renderAll();}
 function renderAll(){renderDash();renderOverview();initMonthly();}
 loadSettings();renderAll();
+setTimeout(fetchPrices,500);
 </script>
 </body>
 </html>
